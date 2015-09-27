@@ -1,2 +1,0 @@
-Here:
-* [DIY Fractals](/diyf)
