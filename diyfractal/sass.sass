@@ -1,0 +1,348 @@
+[debug]{&,& *{&,&:before,&:after{outline:solid rgba(255,0,0,.125) 1px;}}}
+
+
+//http://sassmeister.com/
+@mixin dotcolon($pseudo-or-programmatic) {
+  @at-root{
+    &:#{$pseudo-or-programmatic},
+    &.#{$pseudo-or-programmatic}{
+      @content
+    }
+  }
+}
+
+
+@import "/mathquill.css";
+@import "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css";
+[class^='fa-'],
+[class*=' fa-']{
+	&:before{
+		font: normal normal normal 16px/1 FontAwesome;
+		display:inline-block;
+		min-width:1em;
+		min-height:1em;
+		text-align:center;
+		vertical-align:middle;
+	}
+	&:not(:only-child,:last-child){margin-right:.5em;}
+}
+
+$bit:10px;
+$shadowy:rgba(0,0,0,.5);
+.dropshadow{
+box-shadow:0 $bit/2 $bit -.5*$bit $shadowy;
+}
+
+[unprocessed]{opacity:0;}
+
+input:not([readonly]),.math-editor,select{
+	outline:none;
+	box-shadow:inset 0 $bit/4 $bit/4 $bit/-4 $shadowy;
+	border: solid #aaa 1px;
+	border-radius: $bit/2;
+	padding:$bit/4;
+}
+/*#r,#g,#b{width:100%;}*/
+
+html {box-sizing: border-box;}
+*, *:before, *:after {
+	box-sizing: inherit;
+	text-align: inherit;
+}
+
+#note{
+	text-align:center;
+	margin:.25em;
+	float: right;
+	width: 60%;
+	font-family: arial;
+}
+
+body,
+html{
+	margin:0;
+	padding:0;
+	border:0;
+	user-select:none;
+	background:linear-gradient(#000,#333);
+	xfont:10px sans-serif;
+}
+label{font-weight:bold;cursor:pointer;}
+.button,
+button{
+	cursor:pointer;
+	font-family:sans-serif;
+}
+
+$W:500px;
+#page{
+	x-max-width:1000px;
+	max-width:$W;
+	width:100%;
+	margin:0 auto;
+	text-align:center;
+	/*{max-width:100%!important;}*/
+	
+	&>#inputs{
+	    position: absolute;
+	    left: 0;
+	    bottom: 0;
+	    left: 50%;
+	    transform: translateX(-50%);
+		opacity:.95;
+	}
+}
+
+#inputs{
+	&:hover,
+	&:focus{opacity:1;}
+	
+	font-size:14px;
+	
+	button.minimize{
+		position:absolute!important;
+		right:0;
+		top:0;
+	}
+	&.mini .minimize{
+		width:100%;
+		height:100%;
+	}
+	
+	input:not([readonly]),select,button{
+		&:focus{
+			outline:none;
+			box-shadow: 0 0 5px #0af;
+			z-index: 9999;
+			position: relative;
+		}
+	}
+
+	background:linear-gradient(#fff,#ddd);
+	opacity:.75;
+    resize: horizontal;
+    overflow: hidden;
+    width:600px;
+    padding:$bit;
+	[type='checkbox']{width:2em;height:2em;box-shadow:none;}
+	/*#colorform{display:block;margin: 0 auto;}*/
+	h2{margin:$bit 0 0 0;}
+	h2,input,.jax{font-family:monospace;}
+	text-align:left;
+	.w2{
+	    display: inline-block;
+	    width: 2em;
+	    text-align: center;
+    }
+	.math-editor{
+		var,span[class=""]{
+		    font-family: math;
+		}
+		width:100%;
+		background-color:#fff;
+		padding:$bit/2;
+		&.hover{
+			background-color:#0af;
+			color:#fff;
+		}
+		&>*{
+			font-size:20px;
+			width:100%;
+			box-sizing: content-box;
+			border:none;
+			padding:0;
+			box-shadow:none!important;
+		}
+	}
+	.error{color:red;}
+	.expression-holder{
+	    margin-top: $bit;
+	    text-align: center;	
+	    font-size:16px;
+		&>*{
+		    vertical-align: middle;
+			.matrix{
+				display:inline-block;
+				text-align:center;
+				&>*{width:100%;}
+				td:nth-child(6) {width: 99%;}/*make main eq section expand as much as it can*/
+				tr td:first-child {
+			    	white-space: nowrap;
+				}				
+				.bracket{
+				    border: solid black 1px;
+				    font-size:2px;
+				    &.l{border-width: 1em 0 1em 1em;}
+				    &.r{border-width: 1em 1em 1em 0;}
+				}
+			}
+		}
+		w{display:none;}
+		&.hide-fv v{display:none!important;}
+		&.picmode{
+		    padding: $bit;
+			&{background:#fff;}
+			v,select{display:none!important;}
+			w{display:inline-block;}
+			input,.math-editor{background:transparent;border:none;box-shadow:none;}
+			input:not([readonly]){padding:0!important;text-align: left;font-family:Symbola;font-size:inherit;width:2.5em;}
+			.math-editor *{
+				
+			}
+		}
+	}
+	.fast{float:right;}
+	
+	#progress{
+		margin-bottom:8px;
+		height:1px;
+		width:0px;
+		background:#0af;
+	}
+}
+
+m,.colorform{
+	font-family: math;
+	font-weight:normal;
+}
+n{
+	font-family: Symbola;
+	font-weight:normal;
+	& input[readonly] {
+	    width: 70px;
+	    text-overflow: visible;
+	    font-family: Symbola!important;
+	    font-size:inherit;
+	    background-color: transparent;
+	    border: none;
+	    text-align: center;
+	}
+}	
+
+.qtip-content{
+	font-size: 13px;
+	line-height: 1.25em;
+	a{color:#fff;}
+}
+
+#mapholder{
+	overflow: hidden;
+	resize: both;
+	@extend .dropshadow;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 0;
+	&:before {
+	    content: "";
+	    position: absolute;
+	    right: 0;
+	    bottom: 0;
+	    background-image: linear-gradient(-45deg,rgba(255,255,255,.5) 0%,rgba(255,255,255,0) 33%);
+	    width: 20px;
+	    height: 20px;
+	    display: block;
+	    z-index: 9999;
+        cursor: se-resize;
+	}
+}
+#map {
+	position:relative;
+	left:0;
+	top:0;
+	width:100%;
+	height:100%;
+	margin:0 auto;
+	background-color:#000;
+    min-height: 500px;
+    min-width: 500px;	
+	&.shift-down{cursor:crosshair;}
+}
+[debug].tile{
+	outline:1px dotted rgba(255,255,255,.25);
+	&:before {
+	    content: attr(x)","attr(y)","attr(z);
+	    color: #fff;
+	    position: absolute;
+	    left: 0;
+	    top: 0;
+	}
+}
+
+.leaflet-fade-anim .leaflet-tile{transition-duration:.2s;}
+
+#presets{
+	label{display:inline-block;}
+	select{width:150px;}
+}
+
+#freevars{
+	input{
+		vertical-align: middle;
+		margin: 0;
+		height: 2em;
+		&[id]{width:4em;}
+		&[type='range']{
+			width: 200px;
+			background: transparent;
+			padding: 0;
+			margin: 0;
+			box-shadow: none;		
+		}
+		&[type='number']:not([id]){
+			width:3.5em;
+			background-color: transparent;
+			box-shadow: none;
+			border: none;
+		}
+	}
+}
+
+.leaflet-control{
+	.ctrlicon{cursor:pointer;}
+	.ctrlicon:before{margin: 0.25em 0;}
+}
+
+#pic{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-image: radial-gradient(rgba(0, 0, 0, 0.75),#000);
+	color: #fff;
+	cursor:pointer;
+	& *{color:inherit;}
+	a{
+	    position: absolute;
+	    left: 50%;
+	    top: 50%;
+	    transform: translate(-50%,-50%);
+	    border: solid white $bit/2;
+	    @extend .dropshadow;
+		background-color: #000;
+		text-decoration: none;
+		font-family: sans-serif;
+		font-size: 13px;	    
+		img{
+			max-width: 100%;
+			max-height: 100%;
+			width: 100%;
+			height: auto;		
+		}
+		.dl-hint{position:absolute;width:100%;text-align:center;background-color: rgba(0,0,0,.5);}
+	}
+	.x{
+		position: absolute;
+		top: 0em;
+		font-size: 5em;
+		line-height: 1em;
+		right: 0;
+	}
+}
+
+.-webkit- .fa-paint-brush:before{
+	background-image: linear-gradient(-135deg,red,orange,lime,blue,indigo,magenta);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}

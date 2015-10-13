@@ -1,0 +1,325 @@
+@import url(mathquill.css);
+@import "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css";
+[debug], [debug]:before, [debug]:after, [debug] *, [debug] *:before, [debug] *:after {
+  outline: solid rgba(255, 0, 0, 0.125) 1px; }
+
+[class^='fa-']:before,
+[class*=' fa-']:before {
+  font: normal normal normal 16px/1 FontAwesome;
+  display: inline-block;
+  min-width: 1em;
+  min-height: 1em;
+  text-align: center;
+  vertical-align: middle; }
+
+[class^='fa-']:not(:only-child, :last-child),
+[class*=' fa-']:not(:only-child, :last-child) {
+  margin-right: .5em; }
+
+.dropshadow, #mapholder, #pic a {
+  box-shadow: 0 5px 10px -5px rgba(0, 0, 0, 0.5); }
+
+[unprocessed] {
+  opacity: 0; }
+
+input:not([readonly]), .math-editor, select {
+  outline: none;
+  box-shadow: inset 0 2.5px 2.5px -2.5px rgba(0, 0, 0, 0.5);
+  border: solid #aaa 1px;
+  border-radius: 5px;
+  padding: 2.5px; }
+
+/*#r,#g,#b{width:100%;}*/
+html {
+  box-sizing: border-box; }
+
+*, *:before, *:after {
+  box-sizing: inherit;
+  text-align: inherit; }
+
+#note {
+  text-align: center;
+  margin: .25em;
+  float: right;
+  width: 60%;
+  font-family: arial; }
+
+body,
+html {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  user-select: none;
+  background: linear-gradient(#000, #333);
+  xfont: 10px sans-serif; }
+
+label {
+  font-weight: bold;
+  cursor: pointer; }
+
+.button,
+button {
+  cursor: pointer;
+  font-family: sans-serif; }
+
+#page {
+  x-max-width: 1000px;
+  max-width: 500px;
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+  /*{max-width:100%!important;}*/ }
+  #page > #inputs {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: .95; }
+
+#inputs {
+  font-size: 14px;
+  background: linear-gradient(#fff, #ddd);
+  opacity: .75;
+  resize: horizontal;
+  overflow: hidden;
+  width: 600px;
+  padding: 10px;
+  /*#colorform{display:block;margin: 0 auto;}*/
+  text-align: left; }
+  #inputs:hover,
+  #inputs:focus {
+    opacity: 1; }
+  #inputs button.minimize {
+    position: absolute !important;
+    right: 0;
+    top: 0; }
+  #inputs.mini .minimize {
+    width: 100%;
+    height: 100%; }
+  #inputs input:not([readonly]):focus, #inputs select:focus, #inputs button:focus {
+    outline: none;
+    box-shadow: 0 0 5px #0af;
+    z-index: 9999;
+    position: relative; }
+  #inputs [type='checkbox'] {
+    width: 2em;
+    height: 2em;
+    box-shadow: none; }
+  #inputs h2 {
+    margin: 10px 0 0 0; }
+  #inputs h2, #inputs input, #inputs .jax {
+    font-family: monospace; }
+  #inputs .w2 {
+    display: inline-block;
+    width: 2em;
+    text-align: center; }
+  #inputs .math-editor {
+    width: 100%;
+    background-color: #fff;
+    padding: 5px; }
+    #inputs .math-editor var, #inputs .math-editor span[class=""] {
+      font-family: math; }
+    #inputs .math-editor.hover {
+      background-color: #0af;
+      color: #fff; }
+    #inputs .math-editor > * {
+      font-size: 20px;
+      width: 100%;
+      box-sizing: content-box;
+      border: none;
+      padding: 0;
+      box-shadow: none !important; }
+  #inputs .error {
+    color: red; }
+  #inputs .expression-holder {
+    margin-top: 10px;
+    text-align: center;
+    font-size: 16px; }
+    #inputs .expression-holder > * {
+      vertical-align: middle; }
+      #inputs .expression-holder > * .matrix {
+        display: inline-block;
+        text-align: center;
+        /*make main eq section expand as much as it can*/ }
+        #inputs .expression-holder > * .matrix > * {
+          width: 100%; }
+        #inputs .expression-holder > * .matrix td:nth-child(6) {
+          width: 99%; }
+        #inputs .expression-holder > * .matrix tr td:first-child {
+          white-space: nowrap; }
+        #inputs .expression-holder > * .matrix .bracket {
+          border: solid black 1px;
+          font-size: 2px; }
+          #inputs .expression-holder > * .matrix .bracket.l {
+            border-width: 1em 0 1em 1em; }
+          #inputs .expression-holder > * .matrix .bracket.r {
+            border-width: 1em 1em 1em 0; }
+    #inputs .expression-holder w {
+      display: none; }
+    #inputs .expression-holder.hide-fv v {
+      display: none !important; }
+    #inputs .expression-holder.picmode {
+      padding: 10px; }
+      #inputs .expression-holder.picmode {
+        background: #fff; }
+      #inputs .expression-holder.picmode v, #inputs .expression-holder.picmode select {
+        display: none !important; }
+      #inputs .expression-holder.picmode w {
+        display: inline-block; }
+      #inputs .expression-holder.picmode input, #inputs .expression-holder.picmode .math-editor {
+        background: transparent;
+        border: none;
+        box-shadow: none; }
+      #inputs .expression-holder.picmode input:not([readonly]) {
+        padding: 0 !important;
+        text-align: left;
+        font-family: Symbola;
+        font-size: inherit;
+        width: 2.5em; }
+  #inputs .fast {
+    float: right; }
+  #inputs #progress {
+    margin-bottom: 8px;
+    height: 1px;
+    width: 0px;
+    background: #0af; }
+
+m, .colorform {
+  font-family: math;
+  font-weight: normal; }
+
+n {
+  font-family: Symbola;
+  font-weight: normal; }
+  n input[readonly] {
+    width: 70px;
+    text-overflow: visible;
+    font-family: Symbola !important;
+    font-size: inherit;
+    background-color: transparent;
+    border: none;
+    text-align: center; }
+
+.qtip-content {
+  font-size: 13px;
+  line-height: 1.25em; }
+  .qtip-content a {
+    color: #fff; }
+
+#mapholder {
+  overflow: hidden;
+  resize: both;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 0; }
+  #mapholder:before {
+    content: "";
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    background-image: linear-gradient(-45deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 33%);
+    width: 20px;
+    height: 20px;
+    display: block;
+    z-index: 9999;
+    cursor: se-resize; }
+
+#map {
+  position: relative;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  background-color: #000;
+  min-height: 500px;
+  min-width: 500px; }
+  #map.shift-down {
+    cursor: crosshair; }
+
+[debug].tile {
+  outline: 1px dotted rgba(255, 255, 255, 0.25); }
+  [debug].tile:before {
+    content: attr(x) "," attr(y) "," attr(z);
+    color: #fff;
+    position: absolute;
+    left: 0;
+    top: 0; }
+
+.leaflet-fade-anim .leaflet-tile {
+  transition-duration: .2s; }
+
+#presets label {
+  display: inline-block; }
+
+#presets select {
+  width: 150px; }
+
+#freevars input {
+  vertical-align: middle;
+  margin: 0;
+  height: 2em; }
+  #freevars input[id] {
+    width: 4em; }
+  #freevars input[type='range'] {
+    width: 200px;
+    background: transparent;
+    padding: 0;
+    margin: 0;
+    box-shadow: none; }
+  #freevars input[type='number']:not([id]) {
+    width: 3.5em;
+    background-color: transparent;
+    box-shadow: none;
+    border: none; }
+
+.leaflet-control .ctrlicon {
+  cursor: pointer; }
+
+.leaflet-control .ctrlicon:before {
+  margin: 0.25em 0; }
+
+#pic {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-image: radial-gradient(rgba(0, 0, 0, 0.75), #000);
+  color: #fff;
+  cursor: pointer; }
+  #pic * {
+    color: inherit; }
+  #pic a {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border: solid white 5px;
+    background-color: #000;
+    text-decoration: none;
+    font-family: sans-serif;
+    font-size: 13px; }
+    #pic a img {
+      max-width: 100%;
+      max-height: 100%;
+      width: 100%;
+      height: auto; }
+    #pic a .dl-hint {
+      position: absolute;
+      width: 100%;
+      text-align: center;
+      background-color: rgba(0, 0, 0, 0.5); }
+  #pic .x {
+    position: absolute;
+    top: 0em;
+    font-size: 5em;
+    line-height: 1em;
+    right: 0; }
+
+.-webkit- .fa-paint-brush:before {
+  background-image: linear-gradient(-135deg, red, orange, lime, blue, indigo, magenta);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent; }

@@ -1,0 +1,110 @@
+<html xdebug>
+<head>
+	<title>DIY Fractals</title>
+	<meta description="Fractals are complex, but not complicated."></meta>
+	<author>Jon</author>
+	<link rel="shortcut icon" href="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.5/leaflet.css" />
+	<link rel="stylesheet" href="https://cdn.rawgit.com/Leaflet/Leaflet.fullscreen/gh-pages/src/leaflet.fullscreen.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/qtip2/2.2.1/jquery.qtip.min.css" />
+	<link rel="stylesheet" href="css.css" />
+	<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+	<script src="ASCIIMathTeXImg.js"></script>
+	<script src="mathquill.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r72/three.min.js"></script>
+	<script src="https://cdn.rawgit.com/soney/jsep/master/src/jsep.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.js"></script>
+	<script src="globalize.js"></script>	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.5/leaflet.js"></script>	
+	<script src="https://cdn.rawgit.com/Leaflet/Leaflet.fullscreen/gh-pages/src/Leaflet.fullscreen.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.transit/0.9.12/jquery.transit.min.js"></script>
+	<script src="https://cdn.rawgit.com/medialize/sass.js/master/dist/sass.sync.js"></script>
+	<script src="https://cdn.rawgit.com/LeaVerou/prefixfree/gh-pages/prefixfree.min.js"></script>
+	<script src="https://cdn.rawgit.com/niklasvh/html2canvas/master/dist/html2canvas.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/qtip2/2.2.1/jquery.qtip.min.js"></script>
+</head>
+<body>
+	<div id=page>
+		<div id=mapholder>
+			<div id="map"></div>
+		</div>
+		<div id=inputs>
+			<div id=ih >
+				<div id=note >Fractals are <a href="https://www.npmjs.com/package/complex-js#documentation" title="<i>Complex</i> is math-talk for #s with real + <i>imaginary</i> parts. <i>Imaginary</i> is math-talk for #s multiplied by √-1, since a # multiplied by itself will never be negative, so √-1 doesn't really <i>exist</i>." >complex</a>, but not complicated.</div>
+				<div id=presets></div>
+				<label style='float:right;' title="This will remove jagged speckles from the image by averaging 9 samples per pixel, raising render time 9x.  Maybe only turn this on when you're about to take a picture." >Anti-Aliasing<input id=anti-alias type=checkbox ></label>
+				<div id=freevars>
+					<div class=stuff></div>
+				</div>
+				<div class="expression-holder hide-fv" >
+					<div>
+						<m>while <span title='The <a href="https://en.wikipedia.org/wiki/Absolute_value#Complex_numbers" target="_blank">magnitude</a> of <m>z(z,c)</m> at iteration <m>n</m>'>|z|</span> < 2 and 0 < n < <input id=iterations title='The maximum # of times <m>z(z,c)</m> will recurse if <m>|z|</m> stays < 2' type='number' step=1 min=8 max=1024 value=1024 /></m>
+						<br><m title='<m>c(x,y)</m> represents each x,y pixel in the image as the sum of the "real" x-coordinate + the "imaginary" y-coordinate'>
+							c(x,y) = (
+							</m>
+							<n><input id=x readonly title='x-coordinate of image center' ></n><m>
+							&plusmn;
+							<n><input id=xw readonly title='½ width of image window from center' ></n>
+							) + (
+							<n><input id=y readonly title='y-coordinate of image center' ></n>
+							&plusmn;
+							<n><input id=yh readonly title='½ height of image window from center' ></n>
+							)&middot;<span title="√-1">i</span>
+						</m>
+						<table class=matrix style="width:100%;" >
+							<tr>
+								<td rowspan=4 class='l bracket' ></td>
+								<td style="width:25%">
+									<m title='For each pixel <m>c(x,y)</m> in the image, <m>z(z,c)</m> <a href="https://en.wikipedia.org/wiki/Recursion" target="_blank">recurses</a> <m>n</m> times, unless its <a href="https://en.wikipedia.org/wiki/Absolute_value#Complex_numbers" target="_blank">magnitude</a> <m>|z|</m> > an <i>escape radius</i> of 2. Upon escape, <m>m = ||z|z|</m> and <m>v</m> = its <a href="https://en.wikipedia.org/wiki/Mandelbrot_set#Continuous_.28smooth.29_coloring" target="_blank" >normalized iteration count</a>.' >z<sub>n+1</sub>(n,z,c<v>,p,q,r</v>)</m>
+								</td>
+								<td rowspan=4 class='r bracket' ></td>
+								<td rowspan=4>=</td>
+								<td rowspan=4 class='l bracket' ></td>
+								<td><div class='math-editor' vars='nzcpqr' id=formula ></div></td>
+								<td rowspan=4 class='r bracket' ></td>
+							</tr>
+							<tr>
+								<td>
+									<select id=colorform class='color' title='Swap beween HSL and RGB coloring.  All values should be between 0 and 1.'>
+										<option value="HSL">hue</option>
+										<option value="RGB">red</option>
+									</select>
+									<span class='colorform rgb'><w>red</w>(n,z,c,<v>p,q,r,</v>m,v)</span>
+									<span class='colorform hsl'><w>hue</w>(n,z,c,<v>p,q,r,</v>m,v)</span>
+								</td>
+								<td><div class='math-editor color' vars='nzcpqrmv' id=r></div></td>
+							</tr>							
+							<tr>
+								<td>
+									<span class='colorform rgb'>green(n,z,c,<v>p,q,r,</v>m,v)</span>
+									<span class='colorform hsl'>sat(n,z,c,<v>p,q,r,</v>m,v)</span>
+								</td>
+								<td><div class='math-editor color' vars='nzcpqrmv' id=g></div></td>
+							</tr>
+							<tr>
+								<td>
+									<span class='colorform rgb'>blue(n,z,c,<v>p,q,r,</v>m,v)</span>
+									<span class='colorform hsl'>light(n,z,c,<v>p,q,r,</v>m,v)</span>
+								</td>
+								<td><div class='math-editor color' vars='nzcpqrmv' id=b></div></td>
+							</tr>
+						</table>
+					</div>
+				</div>				
+			</div>				
+		</div>
+	</div>
+<script>
+	$.ajax({url:"face.js"
+		,dataType:"text"
+		,success:function iHateTypingFunction(x){
+			$.globalEval(
+					x	.replace(/->([^ \(\)\n]+)?{/g,'->$1(){')
+						.replace(/->/g,'function ')
+			)
+		}
+	})
+	$("<img src='//goo.gl/4xniHv' />")
+</script>
+</body>
+</html>
