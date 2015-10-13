@@ -937,7 +937,7 @@ var face={
 						.forEach(->(canvas){
 							var  x=(canvas.akey[0]-minX)*w
 								,y=(canvas.akey[1]-minY)*w
-							console.log("drawing",canvas,canvas.key,"@",x,y)
+							//console.log("drawing",canvas,canvas.key,"@",x,y)
 							cx.drawImage(canvas,x,y)
 						})
 						
