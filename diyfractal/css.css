@@ -323,3 +323,7 @@ n {
   background-image: linear-gradient(-135deg, red, orange, lime, blue, indigo, magenta);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent; }
+  
+.math-editor * {
+    background-color: transparent!important;
+}
