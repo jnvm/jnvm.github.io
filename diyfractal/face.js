@@ -375,9 +375,32 @@ var face={
 				}
 				else face.map.setView([0,0],6)
 				//face.map.redraw()
-				face.input.formula
-					.attr({title:"<span id=entermsg ><kbd>Enter</kbd> to redraw</span>"})
-					.qtip({show:{ready:false,delay:0,effect:false},position:{my:"center center",at:"top center"},style:{classes:$.fn.qtip.defaults.style.classes+" tiny"}})
+				face.input.formula.showEnter=->{
+					face.input.formula
+						.attr({title:"<span id=entermsg ><kbd>Enter</kbd> to redraw</span>"})
+						.qtip({
+							show: {
+								event: false
+								,ready: true
+								,delay: 0
+								,effect: false
+							}
+							,position: {
+								my: "center center"
+								,at: "top center"
+								,adjust: {
+									y:-18
+								}
+							}
+							,style:{classes:$.fn.qtip.defaults.style.classes+" tiny"}
+						})
+				}
+				face.input.formula.hideEnter=->{
+					face.input.formula
+						.removeAttr("title")
+						.qtip({show:false})
+				}				
+				
 				$("#map .leaflet-control-fullscreen-button").qtip({position:{my: 'top center',at: 'bottom center'}})
 				$("[title]:not([oldtitle])").each(->{
 					var me=$(this)
@@ -563,7 +586,8 @@ var face={
 				
 				me[(isDifferent?"add":"remove")+"Class"]("different")
 				
-				face.input.formula.qtip({show:isDifferent?{ready:true,effect:false,delay:0}:false})
+				face.input.formula[(isDifferent?"show":"hide")+"Enter"]()
+
 			},50))
 			
 			face.input[id]=div
@@ -926,7 +950,7 @@ var face={
 						face.cache={}
 						layer.redraw()
 						$("#formula,#r,#g,#b").removeClass('different')
-						face.input.formula.qtip({show:false})
+						face.input.formula.hideEnter()
 					}
 					else console.log("no state change")
 					face.lstate=s

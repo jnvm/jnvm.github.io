@@ -339,6 +339,7 @@ n {
 .math-editor :empty {outline: dotted red 1px!important;}
 
 .qtip.tiny .qtip-tip{display:none!important;}
+.qtip.tiny .qtip-content{padding:3px;}
 kbd {
     border: solid #0af 1px;
     padding: .125em .25em;
