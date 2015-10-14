@@ -185,7 +185,7 @@
 	
 		vec4 px=vec4(0.0, 0.0, 0.0, 1);
 		const float an=##ALIAS##; //pls be a square
-		const float aRow=sqrt(an);
+		const float aRow=##ALIASSQRT##;
 	
 		//implement a 3x3 averaging anti alias
 		for(float ai=0.0;ai<aRow;ai++){
@@ -247,7 +247,7 @@ $.extend({
 			return $("<span />").attr({class:c})
 		})
 	}
-	,cloneCanvas(oldCanvas){
+	,cloneCanvas:->(oldCanvas){
 		var newCanvas = $.extend(document.createElement('canvas'),{
 			 width:oldCanvas.width
 			,height:oldCanvas.height
@@ -368,20 +368,24 @@ var face={
 				})
 				//regular inputs
 				$.each(lastVals,->(v,k){ console.log(v,k);face.input[v].VAL(k).trigger("input") })
-				
+
 				if(localStorage.lastCoord){
 					pt=JSON.parse(localStorage.lastCoord)
 					face.map.setView([pt.y,pt.x],pt.mzl)
 				}
 				else face.map.setView([0,0],6)
 				//face.map.redraw()
-				$("[title]").each(->{
+				face.input.formula
+					.attr({title:"<span id=entermsg ><kbd>Enter</kbd> to redraw</span>"})
+					.qtip({show:{ready:false},position:{my:"center center",at:"top center"},style:{classes:$.fn.qtip.defaults.style.classes+" tiny"}})
+				$("#map .leaflet-control-fullscreen-button").qtip({position:{my: 'top center',at: 'bottom center'}})
+				$("[title]:not([oldtitle])").each(->{
 					var me=$(this)
 						,o={}
 					if(me.attr("title").match(/<a/i)) o.hide={fixed:true,delay: 500}
 					me.qtip(o)
 				})
-				$("#map .leaflet-control-fullscreen-button").qtip({position:{my: 'top center',at: 'bottom center'}})
+
 				//be courteous
 				$("textarea:visible:first").focus()
 			})
@@ -398,6 +402,7 @@ var face={
 				//then merge with what I have
 				_.extend(json.colorings,face.colorings)
 				_.extend(json.formulas,face.formulas)
+
 				//then save. Lessens chance I'll overwrite someone else's content
 				$.ajax({
 					url: face.db.url
@@ -487,6 +492,7 @@ var face={
 								.replace(/##COLOR3##/,face.expression.infix2glsl(opt.coloring.b))
 								.replace(/##COLOR1##/,face.expression.infix2glsl(opt.coloring.r))
 								.replace(/##ALIAS##/,opt.antiAlias?"9.0":"1.0")
+								.replace(/##ALIASSQRT##/,opt.antiAlias?"3.0":"1.0")
 							].join(";\n")
 				//console.log(shaderCode)
 				var plane = new THREE.Mesh(
@@ -508,9 +514,12 @@ var face={
 	input:{},
 	makeInputs:->{
 		->promptForUniqueIn(set,q,val){
-			var x
+			var x,fset=flip(set)
+			
+			if(fset[val]) return alert("Sorry, this value is already called: "+fset[val])
+
 			while(set[x=prompt("(Note p,q,r are substituted for current values)\n\n"+q+(tis(val,"") ? "\n"+val+"\n" : ""))])
-				alert("That one's already taken, try a different one.")
+				alert("That name's already taken, try a different one.")
 
 			if(val!=undefined && x) set[x]=val
 			face.db.put()
@@ -539,6 +548,23 @@ var face={
 					return div.mathquill("latex",AMTparseAMtoTeX(x))
 				}
 			}
+			
+			div.on("input keyup",_.debounce(->notifyToPressEnterIfChanged{
+				var s=JSON.parse(face.lstate||"{}")
+					,parent=id.length==1?"coloring":"formula"
+					,val=face[("get "+parent).toMethodName() ]()
+					,isDifferent=!(
+						parent=="coloring" ?
+						same(s[parent] && s[parent][id],val)
+						:same(s[id],val)
+					)
+				
+				console.log(id,"isDifferent",isDifferent)
+				
+				me[(isDifferent?"add":"remove")+"Class"]("different")
+				
+				face.input.formula.qtip({show:{effect:false,delay:0,ready:isDifferent}})
+			},50))
 			
 			face.input[id]=div
 			
@@ -893,9 +919,17 @@ var face={
 
 			$.extend(map,{
 				redraw:->{
-					console.log("redrawing")//,Error("!").stack)
-					face.cache={}
-					layer.redraw()
+					var s=JSON.stringify(face.getState())
+					
+					if(s!=face.lstate){
+						console.log("redrawing")//,Error("!").stack)
+						face.cache={}
+						layer.redraw()
+						$("#formula,#r,#g,#b").removeClass('different')
+						face.input.formula.qtip({show:{effect:false,delay:0,ready:false}})
+					}
+					else console.log("no state change")
+					face.lstate=s
 				},
 				setFade:->(on){
 					el[(on?"add":"remove")+"Class"]("leaflet-fade-anim")
@@ -1215,7 +1249,19 @@ var face={
 		}
 	},
 	getIterations:->{
-		return $("#iterations").val()*1
+		return face.input.iterations.val()*1
+	},
+	getAntiAlias:->{
+		return face.input["anti-alias"].is(":checked")
+	},
+	state:"",
+	lstate:"",
+	getState:->{
+		return ["formula","coloring","iterations","antiAlias"]
+			.reduce(->(set,part){
+				set[part]=face[ ("get "+part).toMethodName()]()
+				return set
+			},{})
 	},
 }
 //go

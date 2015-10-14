@@ -51,11 +51,15 @@ html {
   border: 0;
   user-select: none;
   background: linear-gradient(#000, #333);
-  xfont: 10px sans-serif; }
+  xfont: 10px sans-serif;
+  width: 100%;
+  height: 100%;}
 
 label {
   font-weight: bold;
   cursor: pointer; }
+  
+label *{cursor:pointer;}
 
 .button,
 button {
@@ -327,3 +331,20 @@ n {
 .math-editor * {
     background-color: transparent!important;
 }
+
+#iterations{width:60px;}
+
+.different{border: solid #0af 1px;}
+.tiny{font-size:.75em;}
+.math-editor :empty {outline: dotted red 1px!important;}
+
+.qtip.tiny .qtip-tip{display:none!important;}
+kbd {
+    border: solid #0af 1px;
+    padding: .125em .25em;
+    border-radius: .25em;
+    border-bottom: double #0af 3px;
+    background-color: rgba(0, 170, 255,.25);
+    margin: 0 .25em;
+}
+#entermsg{font-size:10px;padding:0;margin:0;}
