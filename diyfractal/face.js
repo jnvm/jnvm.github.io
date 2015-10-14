@@ -377,7 +377,7 @@ var face={
 				//face.map.redraw()
 				face.input.formula
 					.attr({title:"<span id=entermsg ><kbd>Enter</kbd> to redraw</span>"})
-					.qtip({show:{ready:false},position:{my:"center center",at:"top center"},style:{classes:$.fn.qtip.defaults.style.classes+" tiny"}})
+					.qtip({show:{ready:false,delay:0,effect:false},position:{my:"center center",at:"top center"},style:{classes:$.fn.qtip.defaults.style.classes+" tiny"}})
 				$("#map .leaflet-control-fullscreen-button").qtip({position:{my: 'top center',at: 'bottom center'}})
 				$("[title]:not([oldtitle])").each(->{
 					var me=$(this)
@@ -563,7 +563,7 @@ var face={
 				
 				me[(isDifferent?"add":"remove")+"Class"]("different")
 				
-				face.input.formula.qtip({show:{effect:false,delay:0,ready:isDifferent}})
+				face.input.formula.qtip({show:isDifferent?{ready:true,effect:false,delay:0}:false})
 			},50))
 			
 			face.input[id]=div
@@ -926,7 +926,7 @@ var face={
 						face.cache={}
 						layer.redraw()
 						$("#formula,#r,#g,#b").removeClass('different')
-						face.input.formula.qtip({show:{effect:false,delay:0,ready:false}})
+						face.input.formula.qtip({show:false})
 					}
 					else console.log("no state change")
 					face.lstate=s
