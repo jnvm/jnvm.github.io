@@ -159,7 +159,7 @@ var util={
         ,o2a            :function(){return obj2array.apply({},arguments)}
 		,flip           :function(o){
 			var nu={}
-			for(var i in o) nu[o[i]]=i
+			for(var i in o) nu[JSON.stringify(o[i])]=i
 			return nu
 		}   
 		,same           :function(a,b){ return JSON.stringify(a)==JSON.stringify(b) }
