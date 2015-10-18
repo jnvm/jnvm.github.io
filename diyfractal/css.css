@@ -197,7 +197,7 @@ n {
   font-family: Symbola;
   font-weight: normal; }
   n input[readonly] {
-    width: 70px;
+    width: 90px!important;
     text-overflow: visible;
     font-family: Symbola !important;
     font-size: inherit;
@@ -349,3 +349,4 @@ kbd {
     margin: 0 .25em;
 }
 #entermsg{font-size:10px;padding:0;margin:0;}
+.while{text-align:left;}

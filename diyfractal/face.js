@@ -4,7 +4,9 @@
 //put state in url#?
 //add upload to imgur?
 ->shaderScope(){/*
-	precision highp float;
+	uniform float scale;
+	uniform float X;
+	uniform float Y;
 
 	#define PI 3.1415926535897932384626433832795
 	vec2 cPI=vec2(PI,0.0);
@@ -191,8 +193,8 @@
 		for(float ai=0.0;ai<aRow;ai++){
 		for(float aj=0.0;aj<aRow;aj++){
 			vec2 c = vec2(
-				 (X + (gl_FragCoord.x+(ai/aRow))* scale)
-				,(Y + (gl_FragCoord.y+(aj/aRow))* scale)
+				 (X + (gl_FragCoord.x+(ai/aRow))*scale)
+				,(Y + (gl_FragCoord.y+(aj/aRow))*scale)
 			);
 			vec2 z = vec2(0, 0);
 	
@@ -213,8 +215,8 @@
 			}
 			
 			//phrase new vars as complex
-			vec2 v= vec2( escaped ? (n.x - log(log(M)/logOf2)/logOf2 )/float(maxN) : 0.0 ,0);
-			vec2 m=vec2(M,0);
+			vec2 v= vec2( escaped ? (n.x - log(log(M)/logOf2)/logOf2 )/float(maxN) : 0.0 ,0.0);
+			vec2 m=vec2(M,0.0);
 	
 			vec3 rgb=##HSL##(vec3(
 				 length(##COLOR1##)
@@ -303,11 +305,7 @@ var face={
 			face.colorings=JSON.parse(localStorage.colorings||"{}")
 			face.formulas=JSON.parse(localStorage.formulas||"{}")
 			
-			//prep webgl
-			face.render.renderer=new THREE.WebGLRenderer({
-				preserveDrawingBuffer: true//needed for toDataURL?
-			})
-			face.render.shaderCore=multiline(shaderScope)
+			face.render.webglInit()
 			
 			//init some math
 			initTex2Asciimath([])
@@ -415,7 +413,7 @@ var face={
 		})
 	},
 	db:{
-		url:"https://api.myjson.com/bins/1hhtu"
+		 url:"https://api.myjson.com/bins/1hhtu"
 		,get:->(done){ $.get(face.db.url,done) }
 		,put:->(done){
 			//first get what's there right now
@@ -443,11 +441,8 @@ var face={
 		}
 	},
 	render:{
-		square2:->(o){
-			var x=o.x
-				,y=o.y
-				,zoom=o.zoom
-				,done=o.callback
+		square:->(o){
+			var  zoom=o.zoom
 				,w=o.side
 				,h=w
 				,wh={
@@ -459,30 +454,20 @@ var face={
 				,cx=canvas.getContext('2d')
 				,scratch=cx.createImageData(w,h)
 				,z=2*pow(2,zoom)
-				,iter=$("#iterations").val()*1
-				,alias=$("#anti-alias").is(":checked")
-				,have=0
-				,formula=face.getFormula()
-				,coloring=face.getColoring()
-				,localT=0
-				,workerT=0
-				,lambdaT=0
 				,opt={
-					verb: 1
-					,iter: iter
+					 iter: face.getIterations()
 					,ptr:{
-						 x: x/z*w
-						,y: y/z*h
+						 x: o.x/z*w
+						,y: o.y/z*h
 						,z: z
 					}
 					,w: w
 					,h: h
 					,zoom:zoom
-					,formula: formula
-					,coloring: coloring
-					,t1: Date.now()
+					,formula: face.getFormula()
+					,coloring: face.getColoring()
 					,key:o.key//+","+lvl
-					,antiAlias:alias
+					,antiAlias:face.getAntiAlias()
 				}
 			
 			face.render.via.webgl(opt,->(drawnCanvas){
@@ -490,49 +475,55 @@ var face={
 				o.callback(canvas)
 			})
 		},
-	 	
 		via:{
 			webgl:->(opt,callback){
 				//console.log("opt",opt)
 				var s=face.map.tileSize
-					,scene = new THREE.Scene()
-					,camera = new THREE.PerspectiveCamera(1,1,1,1.01)//last one, just > camera.position.z
 					,forceFloat=face.expression.forceFloat
-					//shape geometry doesn't really matter; just needs to fill camera so shader can be applied to full view
-					,shaderCode=["//ha"
-							//need to inline pt & fxns...
-							,"float scale="+forceFloat(1/opt.ptr.z)
-							,"float tileSize="+forceFloat(face.map.tileSize)
-							,"float X="+forceFloat( opt.ptr.x)
-							,"float Y="+forceFloat(-opt.ptr.y//on a canvas, up is -; on a shader, down is -
-								-face.map.tileSize*1/opt.ptr.z//I have no frickin idea why.  Why only Y & not X? Probably because of the above.
-							)
-							,face.render.shaderCore
-								.replace(/##Z##/,face.expression.infix2glsl(opt.formula))
-								.replace(/##MAXN##/,face.getIterations())
-								.replace(/##HSL##/,opt.coloring.colorform=="HSL" ? "hsl2rgb":"")
-								.replace(/##COLOR2##/,face.expression.infix2glsl(opt.coloring.g))
-								.replace(/##COLOR3##/,face.expression.infix2glsl(opt.coloring.b))
-								.replace(/##COLOR1##/,face.expression.infix2glsl(opt.coloring.r))
-								.replace(/##ALIAS##/,opt.antiAlias?"9.0":"1.0")
-								.replace(/##ALIASSQRT##/,opt.antiAlias?"3.0":"1.0")
-							].join(";\n")
+					,uniforms={
+						scale:{type: "f",value: 1/opt.ptr.z}
+						,X:   {type: "f",value: opt.ptr.x}
+						,Y:   {type: "f",value: -opt.ptr.y - face.map.tileSize * 1 / opt.ptr.z}
+						,t:   {type: "f",value:Date.now()}
+					}
+					,shaderCode=face.cache.shaderCode
 				//console.log(shaderCode)
-				var plane = new THREE.Mesh(
-						 new THREE.PlaneGeometry(1,1,1)
-						,new THREE.ShaderMaterial({fragmentShader: shaderCode})
-					)
-					,renderer=face.render.renderer
-				
-				renderer.setSize(s,s)
-				scene.add( plane )
-				camera.position.z = 1
-				setTimeout(->{
-					renderer.render(scene, camera)
-					callback(renderer.domElement)
-				},1)
+				//console.log(uniforms)
+				face.render.webgl.draw(uniforms,shaderCode,callback)
 			}
-		}
+		},
+		webglInit:->{
+			face.render.shaderCore=multiline(shaderScope)				
+			face.render.webgl={
+				 renderer: new THREE.WebGLRenderer({
+					 preserveDrawingBuffer: true //needed for toDataURL?
+					,logarithmicDepthBuffer: true
+					,precision: "highp"
+				})
+				,camera:new THREE.PerspectiveCamera(1,1,1,1.01)//last one, just > camera.position.z
+				,draw:->(uniforms,shaderCode,callback){
+					var scene=new THREE.Scene()
+					scene.add(
+						new THREE.Mesh(
+							//shape geometry doesn't really matter; just needs to fill camera so shader can be applied to full view
+							new THREE.PlaneGeometry(1, 1, 1)
+							,new THREE.ShaderMaterial({
+								uniforms: uniforms
+								,fragmentShader: shaderCode
+							})
+						)
+					)
+					
+					requestAnimationFrame(->{
+						webgl.renderer.render(scene, webgl.camera)
+						callback(webgl.renderer.domElement)
+					})
+				}
+			}
+			var webgl=face.render.webgl
+			webgl.renderer.setSize(face.map.tileSize,face.map.tileSize)
+			webgl.camera.position.z = 1
+		},
 	},
 	input:{},
 	makeInputs:->{
@@ -893,14 +884,13 @@ var face={
 					face.cache[key]="rendering"//placeholder
 					canvas.key=key
 					//console.log("requesting render",key)
-					face.render.square2({
+					face.render.square({
 						 x: pt.x
 						,y: pt.y
 						,side: face.map.tileSize
 						,zoom: zoom
 						,givenCanvas: canvas
 						,key:key
-						//you'll reply twice: once as lowres & once hi; save hi
 						,callback: function(drawnCanvas) {
 							if(0 && "want coords in canvas") {
 								var ctx = drawnCanvas.getContext('2d')
@@ -909,19 +899,9 @@ var face={
 								//ctx.fillText(key+"@"+drawnCanvas.px, 10, 10)
 								ctx.fillText(drawnCanvas.ptr.x+"|"+drawnCanvas.ptr.y, 10, 10)
 							}
-							//only cache hi res
-							if(drawnCanvas.px==1){
-								if(face.cache[key]=="rendering" || !face.cache[key]){
-									//console.log("caching hi res",key)
-									face.cache[key] = $.cloneCanvas(drawnCanvas)
-								}
-								else{
-									//console.log("already have hi res cache for ",key,"what gives")
-								}
-							}
-							else{
-								//console.log("lo res for ",key,"not caching")
-							}
+							
+							if(!face.cache[key]) face.cache[key] = $.cloneCanvas(drawnCanvas)
+							
 							layer.tileDrawn(drawnCanvas)
 						}
 					})
@@ -943,11 +923,13 @@ var face={
 
 			$.extend(map,{
 				redraw:->{
-					var s=JSON.stringify(face.getState())
+					var so=face.getState()
+						,s=JSON.stringify(so)
 					
 					if(s!=face.lstate){
 						console.log("redrawing")//,Error("!").stack)
 						face.cache={}
+						face.cache.shaderCode=face.getShaderCode(so)
 						layer.redraw()
 						$("#formula,#r,#g,#b").removeClass('different')
 						face.input.formula.hideEnter()
@@ -1201,7 +1183,7 @@ var face={
 			
 			->updateCoord{
 				var pt=map.getCoords()
-					,n=7
+					,n=5
 				
 				->tiny(x){
 					var ax=abs(x)
@@ -1258,11 +1240,7 @@ var face={
 		return face.expression.simplify(s)
 	},
 	getFormula:->{
-		var error=false,r
-		try{ r=face.parseStringInput(face.input.formula.val().trim()||"c") }
-		catch(err){ error=err }
-		face.input.formula.parent()[(error?"add":"remove")+"Class"]("error")
-		return r
+		return face.parseStringInput(face.input.formula.val().trim()||"0")
 	},
 	getColoring:->{
 		return {
@@ -1276,17 +1254,36 @@ var face={
 		return face.input.iterations.val()*1
 	},
 	getAntiAlias:->{
-		return face.input["anti-alias"].is(":checked")
+		return face.input.antiAlias.is(":checked")
 	},
 	state:"",
 	lstate:"",
 	getState:->{
+		//(of inputs)
 		return ["formula","coloring","iterations","antiAlias"]
 			.reduce(->(set,part){
-				set[part]=face[ ("get "+part).toMethodName()]()
+				var error=false
+					,parent=face.input[part] && face.input[part].parent()
+						|| $(_.pick(face.input,["r","g","b"]))//restructure? so dumb I shaped it this ways
+				try{ set[part]=face[ ("get "+part).toMethodName()]() }
+				catch(err){error=err}
+				parent[(error?"add":"remove")+"Class"]("error")
 				return set
 			},{})
 	},
+	getShaderCode:->(state){
+		//only calc once per redraw..not every square
+		return face.cache.shaderCode
+			||face.render.shaderCore
+				.replace(/##MAXN##/     ,state.iterations)
+				.replace(/##Z##/        ,face.expression.infix2glsl(state.formula))
+				.replace(/##HSL##/      ,state.coloring.colorform=="HSL" ? "hsl2rgb":"")
+				.replace(/##COLOR1##/   ,face.expression.infix2glsl(state.coloring.r))
+				.replace(/##COLOR2##/   ,face.expression.infix2glsl(state.coloring.g))
+				.replace(/##COLOR3##/   ,face.expression.infix2glsl(state.coloring.b))
+				.replace(/##ALIAS##/    ,state.antiAlias?"9.0":"1.0")
+				.replace(/##ALIASSQRT##/,state.antiAlias?"3.0":"1.0")
+	}
 }
 //go
 $(face.init)

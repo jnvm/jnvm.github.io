@@ -32,30 +32,34 @@
 			<div id=ih >
 				<div id=note >Fractals are <a href="https://www.npmjs.com/package/complex-js#documentation" title="<i>Complex</i> is math-talk for #s with real + <i>imaginary</i> parts. <i>Imaginary</i> is math-talk for #s multiplied by √-1, since a # multiplied by itself will never be negative, so √-1 doesn't really <i>exist</i>." >complex</a>, but not complicated.</div>
 				<div id=presets></div>
-				<label style='float:right;' title="This will remove jagged speckles from the image by averaging 9 samples per pixel, raising render time 9x.  Maybe only turn this on when you're about to take a picture." >Anti-Aliasing<input id=anti-alias type=checkbox ></label>
+				<label style='float:right;' title="This will remove jagged speckles from the image by averaging 9 samples per pixel, raising render time 9x.  Maybe only turn this on when you're about to take a picture." >Anti-Aliasing<input id=antiAlias type=checkbox ></label>
 				<div id=freevars>
 					<div class=stuff></div>
 				</div>
 				<div class="expression-holder hide-fv" >
 					<div>
 						<m>while <span title='The <a href="https://en.wikipedia.org/wiki/Absolute_value#Complex_numbers" target="_blank">magnitude</a> of <m>z(z,c)</m> at iteration <m>n</m>'>|z|</span> < 2 and 0 < n < <input id=iterations title='The maximum # of times <m>z(z,c)</m> will recurse if <m>|z|</m> stays < 2' type='number' step=1 min=8 max=1024 value=1024 /></m>
-						<br><m title='<m>c(x,y)</m> represents each x,y pixel in the image as the sum of the "real" x-coordinate + the "imaginary" y-coordinate'>
-							c(x,y) = (
+						<div class='while'>
+							<m title='<m>c(x,y)</m> represents each x,y pixel in the image as the sum of the "real" x-coordinate + the "imaginary" y-coordinate'>
+								c(x,y) = (
+								</m>
+								<n><input id=x readonly title='x-coordinate of image center' ></n><m>
+								&plusmn;
+								<n><input id=xw readonly title='½ width of image window from center' ></n>
+								) + (
+								<n><input id=y readonly title='y-coordinate of image center' ></n>
+								&plusmn;
+								<n><input id=yh readonly title='½ height of image window from center' ></n>
+								)&middot;<span title="√-1">i</span>
 							</m>
-							<n><input id=x readonly title='x-coordinate of image center' ></n><m>
-							&plusmn;
-							<n><input id=xw readonly title='½ width of image window from center' ></n>
-							) + (
-							<n><input id=y readonly title='y-coordinate of image center' ></n>
-							&plusmn;
-							<n><input id=yh readonly title='½ height of image window from center' ></n>
-							)&middot;<span title="√-1">i</span>
-						</m>
+							<br>
+							<m title='<m>v(n,|z|)</m> a <a href="https://en.wikipedia.org/wiki/Mandelbrot_set#Continuous_.28smooth.29_coloring">normalized iteration count</a>, essentially a smooth version of the integer n.  It will look best on z^2+c.'>v(n,|z|)</m><m> = n - (log(log(|z|)/log(2))/log(2))/n</m>
+						</div>
 						<table class=matrix style="width:100%;" >
 							<tr>
 								<td rowspan=4 class='l bracket' ></td>
 								<td style="width:25%">
-									<m title='For each pixel <m>c(x,y)</m> in the image, <m>z(z,c)</m> <a href="https://en.wikipedia.org/wiki/Recursion" target="_blank">recurses</a> <m>n</m> times, unless its <a href="https://en.wikipedia.org/wiki/Absolute_value#Complex_numbers" target="_blank">magnitude</a> <m>|z|</m> > an <i>escape radius</i> of 2. Upon escape, <m>m = ||z|z|</m> and <m>v</m> = its <a href="https://en.wikipedia.org/wiki/Mandelbrot_set#Continuous_.28smooth.29_coloring" target="_blank" >normalized iteration count</a>.' >z<sub>n+1</sub>(n,z,c<v>,p,q,r</v>)</m>
+									<m title='For each pixel <m>c(x,y)</m> in the image, <m>z(z,c)</m> <a href="https://en.wikipedia.org/wiki/Recursion" target="_blank">recurses</a> <m>n</m> times, unless its <a href="https://en.wikipedia.org/wiki/Absolute_value#Complex_numbers" target="_blank">magnitude</a> <m>|z|</m> > an <i>escape radius</i> of 2. Upon escape, <m>m = |z|</m> and <m>v</m> = its <a href="https://en.wikipedia.org/wiki/Mandelbrot_set#Continuous_.28smooth.29_coloring" target="_blank" >normalized iteration count</a>.' >z<sub>n+1</sub>(n,z,c<v>,p,q,r</v>)</m>
 								</td>
 								<td rowspan=4 class='r bracket' ></td>
 								<td rowspan=4>=</td>
