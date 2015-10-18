@@ -7,6 +7,7 @@
 	uniform float scale;
 	uniform float X;
 	uniform float Y;
+	uniform float T;
 
 	#define PI 3.1415926535897932384626433832795
 	vec2 cPI=vec2(PI,0.0);
@@ -468,6 +469,7 @@ var face={
 					,coloring: face.getColoring()
 					,key:o.key//+","+lvl
 					,antiAlias:face.getAntiAlias()
+					,t:o.t
 				}
 			
 			face.render.via.webgl(opt,->(drawnCanvas){
@@ -484,7 +486,7 @@ var face={
 						scale:{type: "f",value: 1/opt.ptr.z}
 						,X:   {type: "f",value: opt.ptr.x}
 						,Y:   {type: "f",value: -opt.ptr.y - face.map.tileSize * 1 / opt.ptr.z}
-						,t:   {type: "f",value:Date.now()}
+						//,T:   {type: "f",value:opt.t}
 					}
 					,shaderCode=face.cache.shaderCode
 				//console.log(shaderCode)
@@ -514,7 +516,14 @@ var face={
 						)
 					)
 					
+					//var go=->{
+					//	//uniforms.T.value++
+					//	console.log(uniforms.T.value)
+					//	//setTimeout(go,250)
+					//}
+					
 					requestAnimationFrame(->{
+						//go()
 						webgl.renderer.render(scene, webgl.camera)
 						callback(webgl.renderer.domElement)
 					})
@@ -820,6 +829,7 @@ var face={
 				.replace(/\b(\d+\.?\d*)\b/g,"vec2($1,0.0)")//make all real #s complex-friendly
 				.replace(/\bi\b/g,"vec2(0.0,1.0)")//i
 				.replace(/\be\b/g,"vec2(2.718281828459045,0.0)")//e
+				//.replace(/\bt\b/g,"vec2(1.0,0.0)")//t
 
 			face.expression.cFxns.forEach(function(x){
 				str=str.replace(new RegExp("\\b"+x+"\\b","ig"),"c"+x)
@@ -847,9 +857,7 @@ var face={
 		tileSize:512,
 		maxZoom:50,//past 56 precision lost on CPU, half that on GPU
 		make:->(done){
-			face.map.lowRezPxSize=face.map.tileSize/16//(2*(Object.keys(pool.workers).length+1))
-			face.render.lvls=[face.map.lowRezPxSize,1]
-			
+
 			var el=$("#map")
 				,map=L.map(el.attr("id"), {
 					center: [0,0],
@@ -891,7 +899,8 @@ var face={
 						,zoom: zoom
 						,givenCanvas: canvas
 						,key:key
-						,callback: function(drawnCanvas) {
+						,t:~~(Date.now()/1000)
+						,callback: _.once(function(drawnCanvas) {
 							if(0 && "want coords in canvas") {
 								var ctx = drawnCanvas.getContext('2d')
 								ctx.font = "11px serif"
@@ -900,10 +909,10 @@ var face={
 								ctx.fillText(drawnCanvas.ptr.x+"|"+drawnCanvas.ptr.y, 10, 10)
 							}
 							
-							if(!face.cache[key]) face.cache[key] = $.cloneCanvas(drawnCanvas)
+							if(!face.cache[key]||face.cache[key]=="rendering") face.cache[key] = $.cloneCanvas(drawnCanvas)
 							
 							layer.tileDrawn(drawnCanvas)
-						}
+						})
 					})
 				}
 				else{
@@ -911,8 +920,6 @@ var face={
 						//console.log("still rendering",key,"...waiting")
 					}
 					else{
-						//console.log("using cache for ",key)
-						//copy hi-res from predrawn
 						canvas.getContext('2d').drawImage(face.cache[key], 0, 0)
 						layer.tileDrawn(canvas)
 					}
