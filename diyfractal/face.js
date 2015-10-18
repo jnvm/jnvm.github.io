@@ -274,8 +274,9 @@ $.extend({
 		return JSON.stringify(a)==JSON.stringify(b)
 	}
 	,VAL:->(v){
+		console.log(this.FFF,this)
 		//dangit checkbox...
-		var me=$(this)
+		var me=this.jquery?this:$(this)
 			,isCheckbox=me.is(":checkbox")
 		//getter
 		if(v===undefined){
@@ -359,20 +360,23 @@ var face={
 				.on("keyup keypress",function(e){ if(!e.shiftKey) $("#map").removeClass("shift-down") })			
 
 			face.map.make(->{
-				//weirdo inputs
-				var editors=_.extend({formula:lastVals.formula},_.pick(lastVals,["r","g","b","colorform"]))
-				_.each(editors,->(v,k){
-					face.input[k].val(v).trigger("input")
-					delete lastVals[k]
-				})
-				//regular inputs
-				$.each(lastVals,->(v,k){ console.log(v,k);face.input[v].VAL(k).trigger("input") })
-
-				if(localStorage.lastCoord){
-					pt=JSON.parse(localStorage.lastCoord)
-					face.map.setView([pt.y,pt.x],pt.mzl)
+				if(location.hash) face.hash.apply()
+				else{
+					//weirdo inputs
+					var editors=_.extend({formula:lastVals.formula},_.pick(lastVals,["r","g","b","colorform"]))
+					_.each(editors,->(v,k){
+						face.input[k].val(v).trigger("input")
+						delete lastVals[k]
+					})
+					//regular inputs
+					$.each(lastVals,->(v,k){ console.log(v,k);face.input[v].VAL(k).trigger("input") })
+					
+					if(localStorage.lastCoord){
+						pt=JSON.parse(localStorage.lastCoord)
+						face.map.setView([pt.y,pt.x],pt.mzl)
+					}
+					else face.map.setView([0,0],6)
 				}
-				else face.map.setView([0,0],6)
 				//face.map.redraw()
 				face.input.formula.showEnter=->{
 					face.input.formula
@@ -554,6 +558,8 @@ var face={
 			var div=$("<div />")
 				,me=$(this)
 				,id=me.attr("id")
+			div[0].$=div
+			div[0].FFF=10
 				
 			me.append(div)
 				
@@ -599,7 +605,7 @@ var face={
 				 $("<label title='Load a saved fractal formula' />").append(
 					 $("<m class=w2 />").text("z(c)")
 					,$("<select id=preset-formula />").append(
-						$("<option />").text("-Choose-")
+						$("<option disabled />").text("-Choose-")
 						,$.map(face.formulas,->(json,name){return $("<option />").html(name).val(json)})
 					).on("change",->{
 						var v=$(this).val()
@@ -616,7 +622,7 @@ var face={
 				,$("<label title='Load a saved coloring formula' />").append(
 					 $.ic("fa-paint-brush w2")
 					,$("<select id=preset-coloring />").append(
-						$("<option />").text("-Choose-")
+						$("<option disabled />").text("-Choose-")
 						,$.map(face.colorings,->(json,name){return $("<option />").html(name).val(JSON.stringify(json))})
 					).on("change",->{
 						var v=$(this).val()
@@ -929,17 +935,19 @@ var face={
 
 
 			$.extend(map,{
-				redraw:->{
+				redraw:->(force){
 					var so=face.getState()
 						,s=JSON.stringify(so)
 					
-					if(s!=face.lstate){
+					if(s!=face.lstate||force){
 						console.log("redrawing")//,Error("!").stack)
 						face.cache={}
 						face.cache.shaderCode=face.getShaderCode(so)
+						face.cache.state=so
 						layer.redraw()
 						$("#formula,#r,#g,#b").removeClass('different')
 						face.input.formula.hideEnter()
+						face.hash.set()
 					}
 					else console.log("no state change")
 					face.lstate=s
@@ -1183,10 +1191,14 @@ var face={
 			face.map=map
 			window.map=map
 
-			$(window).on("mouseup", function(e) {
-				if($(e.target).attr("id") == "mapholder")
+			$(window)
+				.on("mouseup", ->(e) {
+					//if($(e.target).attr("id") == "mapholder")
 					map.invalidateSize(false)
-			})
+				})
+				.on("mousedown",->(e){
+					
+				})
 			
 			->updateCoord{
 				var pt=map.getCoords()
@@ -1202,6 +1214,8 @@ var face={
 				face.input.y .val(tiny(pt.y  ))
 				face.input.xw.val(tiny(pt.w/2))
 				face.input.yh.val(tiny(pt.h/2))
+				
+				face.hash.set()
 			}
 			
 			//creates weird issues if I don't put it after other extends
@@ -1223,6 +1237,55 @@ var face={
 				.on("move",updateCoord)
 				.on("movestart",updateCoord)
 				.on("moveend",updateCoord)
+				
+			//this is so dumb
+			;-->makeMapResizableToSmallerThanOriginalSize(){
+				function TA_start(id){
+				    var ta = document.getElementById(id);
+				    if(typeof(ta.resizeCheckStarted) == "undefined"){
+				        ta.resizeCheckStarted = true;
+				        ta.resizeUpdated = false;
+				        var cs = window.getComputedStyle(ta,null);
+				        ta.originalH   = cs.getPropertyValue("height");
+				        ta.originalW   = cs.getPropertyValue("width");
+				        ta.originalM   = cs.getPropertyValue("margin");
+				        ta.style.width = ta.originalW;
+				        ta.style.height= ta.originalH;
+				        ta.style.margin= ta.originalM;
+				        ta.resizeCheck = setInterval(TA_checkMe.pass(id),50);
+				    }
+				 }
+				function TA_checkMe(id){
+				    var ta = document.getElementById(id);
+				    if(ta.originalW != ta.style.width || ta.originalH != ta.style.height){
+				        ta.resizeUpdated = true;
+				        ta.originalW = ta.style.width;
+				        ta.originalH = ta.style.height;
+				        ta.style.width="1px";
+				        ta.style.height="1px";
+				        clearInterval(ta.resizeCheck);
+				    }
+				}
+				function TA_stop(id,init){
+				    var ta = document.getElementById(id);
+				    if(typeof(init)=="undefined"){
+				        if(typeof(ta.stopResizeCheck)=="undefined"){
+				            ta.stopResizeCheck = setTimeout(TA_stop.pass(id,true),500);
+				        }
+				    } else {
+				        clearInterval(ta.resizeCheck);
+				        if(ta.resizeUpdated != true){
+				            delete ta.resizeCheckStarted;
+				        }
+				    }
+				
+				}		
+				
+				$("#mapholder")
+					.mouseenter(->{TA_start(this.id)})
+					.mouseleave(->{TA_stop(this.id)})
+			}()
+				
 			done && done()
 		}
 	},
@@ -1267,7 +1330,7 @@ var face={
 	lstate:"",
 	getState:->{
 		//(of inputs)
-		return ["formula","coloring","iterations","antiAlias"]
+		var s=["formula","coloring","iterations","antiAlias"]
 			.reduce(->(set,part){
 				var error=false
 					,parent=face.input[part] && face.input[part].parent()
@@ -1277,6 +1340,8 @@ var face={
 				parent[(error?"add":"remove")+"Class"]("error")
 				return set
 			},{})
+		face.cache.state=s
+		return s
 	},
 	getShaderCode:->(state){
 		//only calc once per redraw..not every square
@@ -1290,6 +1355,36 @@ var face={
 				.replace(/##COLOR3##/   ,face.expression.infix2glsl(state.coloring.b))
 				.replace(/##ALIAS##/    ,state.antiAlias?"9.0":"1.0")
 				.replace(/##ALIASSQRT##/,state.antiAlias?"3.0":"1.0")
+	},
+	hash:{
+		set:_.debounce(->{
+			//state + coords
+			location.hash=LZString.compressToEncodedURIComponent(JSON.stringify({
+				 c:face.map.getCoords()//putting this first makes it updating in the URL fairly clear
+				,m:face.map.getSize()
+				,s:face.cache.state//always already calculated ..?
+			}))
+		},250),
+		apply:->{
+			var o=JSON.parse(LZString.decompressFromEncodedURIComponent(location.hash.slice(1)))
+			console.log("hash was:",o)
+			var s=$.extend(o.s,o.s.coloring)
+				,w=$(window)
+				,mh=$("#mapholder")
+				,wh={
+					 width: min(w.width(), o.m.x)
+					,height: min(w.height(), o.m.y)
+				}
+			delete s.coloring
+			
+			mh.css(wh)//this sets the minimum size?!
+
+			face.map
+				.invalidateSize(false)
+				.setView([o.c.y,o.c.x],o.c.mzl)
+			for(var id in s) face.input[id].VAL(s[id]).trigger("input")
+			
+		},
 	}
 }
 //go
