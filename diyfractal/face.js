@@ -274,7 +274,6 @@ $.extend({
 		return JSON.stringify(a)==JSON.stringify(b)
 	}
 	,VAL:->(v){
-		console.log(this.FFF,this)
 		//dangit checkbox...
 		var me=this.jquery?this:$(this)
 			,isCheckbox=me.is(":checkbox")
