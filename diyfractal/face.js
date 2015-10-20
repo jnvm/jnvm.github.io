@@ -525,11 +525,12 @@ var face={
 					//	//setTimeout(go,250)
 					//}
 					
-					requestAnimationFrame(->{
+					//requestAnimationFrame
+					setTimeout(->{
 						//go()
 						webgl.renderer.render(scene, webgl.camera)
 						callback(webgl.renderer.domElement)
-					})
+					},1)
 				}
 			}
 			var webgl=face.render.webgl
@@ -679,10 +680,11 @@ var face={
 
 		var freevar={min:-10,max:10}
 
-		"PQR".split("").forEach(->makeFreeVars(v){
+		"PQR".split("").forEach(->makeFreeVars(V){
+			var v=V.toLowerCase()
 			$("<div class=freevar />").append(
-				 $("<label />").html("<m>"+v.toLowerCase()+" = </m>")
-				,$("<input />").attr({type:"number",id:v}).val(0)
+				 $("<label />").html("<m>"+v+" = </m>")
+				,$("<input />").attr({type:"number",id:V}).val(0)
 					.on("input change",->{
 						var me=$(this)
 						me.closest("div").find("input[type=range]").val(me.val())
@@ -694,6 +696,41 @@ var face={
 						me.closest("div").find("input[id]").val(me.val())
 					})
 				,$("<input />").attr({type:"number",for:"max"}).val(freevar.max)
+				,$("<button />").append($.ic("fa-video-camera"))
+					.attr({title:"Record a webm tweening <m>"+v+"</m>'s min &rarr; max"})
+					.click(->{
+						var me=$(this)
+							,rangeInput=me.closest(".freevar").find("input[type=range]")
+							,vmin=rangeInput.attr("min")*1
+							,vmax=rangeInput.attr("max")*1
+							,frames=~~max(prompt("Frames to put between "+vmin+" → "+vmax+" for "+v+"?",64),1)
+							,range=vmax-vmin
+							,inc=range/frames
+							,vi=vmin
+							,video = new Whammy.Video(30,1)
+							,ops=fill(frames).map(->{
+								return ->(next){
+									face.input[V].add(rangeInput).val(vi)
+									map.redraw(true,->{
+										video.add(map.toImage("canvas"))
+										vi+=inc
+										next()
+									})
+								}
+							})
+						
+						async.series(ops,->{
+							$("#videoUrl").remove()
+							$("<a />")
+								.attr({
+									 id: "videoUrl"
+									,href: URL.createObjectURL(video.compile())
+									,target:"_blank"
+								})
+								.html("View!")
+								.insertAfter(me)
+						})
+					})
 			).appendTo("#freevars>.stuff")
 			.find("input[for]").on("input change",->updateMinMax{
 				var me=$(this)
@@ -859,7 +896,7 @@ var face={
 	},
 	cache:{},
 	map:{
-		tileSize:512,
+		tileSize:256,
 		maxZoom:50,//past 56 precision lost on CPU, half that on GPU
 		make:->(done){
 
@@ -931,10 +968,31 @@ var face={
 				}
 			}
 			map.canvasLayer=layer//so I can easily reference
+			
+			layer
+				.on("loading",->{
+					console.log("beginning to load tiles")
+					layer.isLoading=true
+				})
+				.on("load",->{
+					console.log("tiles done loading")
+					layer.isLoading=false
+					if(tis(layer.doneLoading,aFxn)){
+						var f=layer.doneLoading
+						delete layer.doneLoading
+						f()
+					}
+				})
 
 
 			$.extend(map,{
-				redraw:->(force){
+				redraw:->(force,done){
+					if(tis(force,aFxn) && done===undefined){
+						done=force
+						force=false
+					}
+					done=done||noop
+					
 					var so=face.getState()
 						,s=JSON.stringify(so)
 					
@@ -943,12 +1001,16 @@ var face={
 						face.cache={}
 						face.cache.shaderCode=face.getShaderCode(so)
 						face.cache.state=so
+						layer.doneLoading=done
 						layer.redraw()
 						$("#formula,#r,#g,#b").removeClass('different')
 						face.input.formula.hideEnter()
 						face.hash.set()
 					}
-					else console.log("no state change")
+					else{
+						console.log("no state change")
+						done()
+					}
 					face.lstate=s
 				},
 				setFade:->(on){

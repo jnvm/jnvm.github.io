@@ -18,11 +18,15 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.5/leaflet.js"></script>	
 	<script src="https://cdn.rawgit.com/Leaflet/Leaflet.fullscreen/gh-pages/src/Leaflet.fullscreen.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.transit/0.9.12/jquery.transit.min.js"></script>
-	<!--<script src="https://cdn.rawgit.com/medialize/sass.js/master/dist/sass.sync.js"></script>-->
+	<!--
+	<script src="https://cdn.rawgit.com/medialize/sass.js/master/dist/sass.sync.js"></script>
 	<script src="https://cdn.rawgit.com/LeaVerou/prefixfree/gh-pages/prefixfree.min.js"></script>
+	-->
 	<script src="https://cdn.rawgit.com/niklasvh/html2canvas/master/dist/html2canvas.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/qtip2/2.2.1/jquery.qtip.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.4.4/lz-string.min.js"></script>
+	<script defer src="https://cdn.rawgit.com/antimatter15/whammy/master/whammy.js"></script>
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/async/1.4.2/async.min.js"></script>
 </head>
 <body>
 	<div id=page>
@@ -101,7 +105,7 @@
 		</div>
 	</div>
 <script>
-	$.ajax({url:"face.js"
+	$.ajax({url:"face.js?"
 		,dataType:"text"
 		,success:function iHateTypingFunction(x){
 			$.globalEval(
