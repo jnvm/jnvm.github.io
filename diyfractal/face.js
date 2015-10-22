@@ -1,8 +1,8 @@
-//input feedback if invalid
+//better input feedback if invalid. And display of fxns
 //consider caching formula results on a color-only change
 //what if I used peers to contribute computation power? (worry about when there are peers..)
-//put state in url#?
 //add upload to imgur?
+//add way to animate map coord & zoom & iterations. Could be done if properly exposed as inputs like the rest.
 ->shaderScope(){/*
 	uniform float scale;
 	uniform float X;
@@ -866,7 +866,7 @@ var face={
 				else if(node.type=="UnaryExpression")  return "("+(node.prefix? node.operator+""+go(node.argument) : go(node.argument)+""+node.operator)+")"
 				else return ""
 			}
-			s=(s||'').replace(/([)0-9])([(a-z])/i,"$1*$2")//presume touching things multiply
+			s=(s||'').replace(/([)0-9])([(a-z])/ig,"$1*$2")//presume touching things multiply
 			var str=go(jsep(s))
 				.replace(/\b(\d+\.?\d*)\b/g,"vec2($1,0.0)")//make all real #s complex-friendly
 				.replace(/\bi\b/g,"vec2(0.0,1.0)")//i
