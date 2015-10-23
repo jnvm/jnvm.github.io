@@ -677,8 +677,9 @@ var face={
 			},20))
 		}
 		buildPresets()
-
-		var freevar={min:-10,max:10}
+		
+		
+		var freevar={min:0,max:1}
 
 		"PQR".split("").forEach(->makeFreeVars(V){
 			var v=V.toLowerCase()
@@ -971,11 +972,11 @@ var face={
 			
 			layer
 				.on("loading",->{
-					console.log("beginning to load tiles")
+					//console.log("beginning to load tiles")
 					layer.isLoading=true
 				})
 				.on("load",->{
-					console.log("tiles done loading")
+					//console.log("tiles done loading")
 					layer.isLoading=false
 					if(tis(layer.doneLoading,aFxn)){
 						var f=layer.doneLoading
@@ -1350,7 +1351,8 @@ var face={
 			done && done()
 		}
 	},
-	parseStringInput:->(s){
+	parseStringInput:->(s,opts){
+		opts=opts||{}
 		//until I can natively escape fxns properly w/o \
 		face.expression.cFxns
 			.forEach(->(f){
@@ -1382,7 +1384,15 @@ var face={
 		}
 	},
 	getIterations:->{
-		return face.input.iterations.val()*1
+		var s=face.input.iterations.val()+''
+			,plsNo=/[^+-.0-9pqr]/gi
+		if(s.match(plsNo)){
+			s=s.replace(plsNo,'')
+			face.input.iterations.parent().qtip({content:"For the love of popcorn please only add the free variables p,q,r in iterations!",show:true})
+		}
+		else face.input.iterations.parent().qtip("hide")
+		var v=face.parseStringInput(s||64)
+		return max(~~eval(v),1)
 	},
 	getAntiAlias:->{
 		return face.input.antiAlias.is(":checked")

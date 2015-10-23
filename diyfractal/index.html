@@ -43,7 +43,13 @@
 				</div>
 				<div class="expression-holder hide-fv" >
 					<div>
-						<m>while <span title='The <a href="https://en.wikipedia.org/wiki/Absolute_value#Complex_numbers" target="_blank">magnitude</a> of <m>z(z,c)</m> at iteration <m>n</m>'>|z|</span> < 2 and 0 < n < <input id=iterations title='The maximum # of times <m>z(z,c)</m> will recurse if <m>|z|</m> stays < 2' type='number' step=1 min=8 max=1024 value=1024 /></m>
+						<m>while
+							<span title='The <a href="https://en.wikipedia.org/wiki/Absolute_value#Complex_numbers" target="_blank">magnitude</a> of <m>z(z,c)</m> at iteration <m>n</m>'>|z|</span>
+							< 2 and 0 < n < 
+							<span id=iterationsHolder>
+								<input id=iterations title='The maximum # of times <m>z(z,c)</m> will recurse if <m>|z|</m> stays < 2' value=1024 />
+							</span>
+						</m>
 						<div class='while'>
 							<m title='<m>c(x,y)</m> represents each x,y pixel in the image as the sum of the "real" x-coordinate + the "imaginary" y-coordinate'>
 								c(x,y) = (
