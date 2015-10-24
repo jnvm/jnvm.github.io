@@ -299,12 +299,13 @@ var face={
 	init:->{
 		//fetch remote store
 		face.db.get(->(json){
-			localStorage.colorings=JSON.stringify(json.colorings||{})
-			localStorage.formulas=JSON.stringify(json.formulas||{})
-
 			//preload ls into face
 			face.colorings=JSON.parse(localStorage.colorings||"{}")
 			face.formulas=JSON.parse(localStorage.formulas||"{}")
+			
+			//add remote
+			localStorage.colorings=JSON.stringify(_.extend(json.colorings||{},face.colorings))
+			localStorage.formulas=JSON.stringify(_.extend(json.formulas||{},face.formulas))
 			
 			face.render.webglInit()
 			
@@ -424,10 +425,11 @@ var face={
 			face.db.get(->(json){
 				if(!json.colorings) json.colorings={}
 				if(!json.formulas) json.formulas={}
+				
 				//then merge with what I have
 				_.extend(json.colorings,face.colorings)
 				_.extend(json.formulas,face.formulas)
-
+				
 				//then save. Lessens chance I'll overwrite someone else's content
 				$.ajax({
 					url: face.db.url
