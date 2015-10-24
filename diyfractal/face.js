@@ -3,6 +3,8 @@
 //what if I used peers to contribute computation power? (worry about when there are peers..)
 //add upload to imgur?
 //add way to animate map coord & zoom & iterations. Could be done if properly exposed as inputs like the rest.
+//coloring backup: {"Mild Shazam":{"r":"im((norm(c)))+10*v^(.5)","g":"1","b":"v^(.00625)","colorform":"HSL"},"Scaly":{"r":"arctan ((z^m))^(.2)+10* v^v","g":"1","b":"v^(.01)","colorform":"HSL"},"Lasered":{"r":"arccos((z^(v^(.1))))^(.1)+10*v^v","g":"1","b":"v^(.01)","colorform":"HSL"},"Scales 2":{"r":"arctan(arctan(z^4))*10*v^v","g":"1","b":"v^(0.01)","colorform":"HSL"},"Clasp":{"r":"10*v^v","g":"v^(0.25)*log(c*m)","b":"1-(z/m)","colorform":"HSL"},"Wacko":{"r":"10*v^(0.1)","g":"v^(0.25)*log(c*m)+v^(0.5)*sin(c^2)^2","b":"((z/m)-(tan(c)/m))^3","colorform":"HSL"},"Blorch":{"r":"2*arctan(v^c+tan(0.1*z)^2)","g":"v^(0.25)*log(c*m)+c^v","b":"1-(z/m)","colorform":"HSL"}}
+
 ->shaderScope(){/*
 	uniform float scale;
 	uniform float X;
@@ -306,6 +308,10 @@ var face={
 			//add remote
 			localStorage.colorings=JSON.stringify(_.extend(json.colorings||{},face.colorings))
 			localStorage.formulas=JSON.stringify(_.extend(json.formulas||{},face.formulas))
+			
+			//re-load ls into face
+			face.colorings=JSON.parse(localStorage.colorings||"{}")
+			face.formulas=JSON.parse(localStorage.formulas||"{}")			
 			
 			face.render.webglInit()
 			
