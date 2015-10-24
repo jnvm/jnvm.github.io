@@ -829,15 +829,7 @@ var face={
 				if(node.type=="BinaryExpression"){
 					var L=go(node.left)
 						,R=go(node.right)
-						,Last=jsep(L)
-						,Rast=jsep(R)
-						,isExp=node.operator=="^"
-					
-					//if either branch's immediate child node is an arithemtic operator, parenthesize, otherwise don't
-					//console.log("L",jsep(L),"R",jsep(R))
-					if( (Last.type=="BinaryExpression" && groupWorthyOps[Last.operator])) L="("+L+")"
-					if( (Rast.type=="BinaryExpression" && groupWorthyOps[Rast.operator])||isExp) R="("+R+")"
-					
+
 					return L+node.operator+R
 				}
 				else if(node.type=="Literal")         	return node.value

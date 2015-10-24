@@ -1717,8 +1717,8 @@ var scale, // = function(jQ, x, y) { ... }
   forceIERedraw = noop,
   div = document.createElement('div'),
   div_style = div.style,
-  transformPropNames = {}
-  /*
+  transformPropNames =
+  
   //html2canvas will not render transforms
   {
     transform:1,
@@ -1726,7 +1726,7 @@ var scale, // = function(jQ, x, y) { ... }
     MozTransform:1,
     OTransform:1,
     msTransform:1
-  }*/,
+  },
   transformPropName;
 
 for (var prop in transformPropNames) {
