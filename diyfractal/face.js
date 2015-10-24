@@ -830,12 +830,12 @@ var face={
 					var L=go(node.left)
 						,R=go(node.right)
 
-					return L+node.operator+R
+					return "("+L+node.operator+R+")"
 				}
 				else if(node.type=="Literal")         	return node.value
 				else if(node.type=="Identifier")      	return node.name
 				else if(node.type=="CallExpression")  	return node.callee.name+"("+node.arguments.map(function(x){return go(x)}).join(",")+")"
-				else if(node.type=="UnaryExpression") 	return "("+(node.prefix? node.operator+""+go(node.argument) : go(node.argument)+""+node.operator)+")"
+				else if(node.type=="UnaryExpression") 	return (node.prefix? node.operator+""+go(node.argument) : go(node.argument)+""+node.operator)
 			}
 			
 			var simplified=(go(ast)+"")
