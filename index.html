@@ -1,1 +1,142 @@
-Hello World
+<!doctype>
+<html>
+	<head>
+	<style>
+html,body{padding:0;margin:0;border-box;font-family:arial;font-size:13px;}
+
+html {box-sizing: border-box; }
+*, *:before, *:after {
+  box-sizing: inherit;
+  text-align: inherit;
+}
+  
+  
+html{background:#aaa;}
+#page{
+	position:relative;
+	z-index:1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding:10px;
+}
+#page>*{
+	display: block;
+	text-align: center;
+	margin: 0 auto;
+}
+
+#creations>*, #dayjob {
+    text-align:left;
+    display: inline-block;
+    padding: 10px;
+    box-shadow: 0 0 10px -3px #aaa;
+    margin: 10px;
+    background: rgba(255,255,255,.85);	
+    vertical-align: top;
+}
+#creations>* {
+    width: calc(50% - 22px);
+}
+#creations img{
+	width:200px;
+	float: left;
+    margin: 10px;
+    max-width:100%;
+    height:auto;
+}
+
+#nda {
+    background: #000;
+    color: #fff;
+    width: 200px;
+    height: 200px;
+    vertical-align: middle;
+    text-align: center;
+    line-height: 200px;
+    font-size: 40px;
+    float: left;
+    margin: 10px;
+    top: 50px;
+}
+
+video{
+	object-fit:cover;
+	position:absolute;
+	z-index:0;
+	left:0;
+	top:0;
+	display:block;
+	width:100%;
+	height:100%;
+}
+h1,h2{
+	color: #fff;
+    text-shadow: 0 0 3px #000;
+    padding:.5em;
+}
+	</style>
+	</head>
+	<body>
+		<video autoplay preload ></video>
+		<script>
+			var webms=[
+					 "http://giant.gfycat.com/ExaltedFlawedAfghanhound.webm"
+					,"http://giant.gfycat.com/NeighboringPeskyAfricanhornbill.webm"
+					,"http://giant.gfycat.com/CommonRespectfulEwe.webm-l"
+					,"http://giant.gfycat.com/BlushingHoarseBedbug.webm"
+					,"http://zippy.gfycat.com/FrigidOpenKatydid.webm-l"
+					,"http://giant.gfycat.com/DecisiveBigheartedIguanodon.webm-l"
+					//,"http://giant.gfycat.com/FormalIdealGartersnake.webm-l"
+				]
+				,last=(localStorage.lastWebm||0)*1
+				,webm=webms[last%webms.length]
+				,vid=document.getElementsByTagName("video")[0]
+			localStorage.lastWebm=++last
+			if(webm.match("-l")){
+				webm=webm.split("-")[0]
+				vid.setAttribute("loop","loop")
+				vid.style.webkitFilter="blur(5px)"
+			}
+			vid.playbackRate=.75
+			vid.setAttribute("src",webm)
+		</script>
+		<div id=page>
+			<img src="https://lh3.googleusercontent.com/-TW_3WMn-6oI/UpqUDuVypyI/AAAAAAAADDk/eAk7kOPYfD4/s64-Ic42/" style="-webkit-filter: invert(100%) drop-shadow(0 0 2px #000);">
+			<!--<h1>jnvm</h1>-->
+			<h2>Creations:</h2>
+			<div id=creations>
+				<div>
+					<a href="http://Anadro.me">
+						<img src="https://pbs.twimg.com/profile_images/600538100226347009/GLXV4wph_400x400.png">
+						<h3>Anadro.me</h3>
+					</a>
+					<a href="http://twitter.com/Anadromeo" tweet>@Anadromeo</a>
+					<p>A mobile-friendly omnidirectional scrabble variant with 40 new bonus tiles, a board editor fed by a tile inventory mechanic, and definitions provided per turn. Scores may require scientific notation.</p>
+					<p>Bot player "Lux" will beat you: he always finds the highest-scoring turn in a board of arbitrary size, tile configuration, letter placement and rack letter availability.</p>
+					<p>Things used: Nodejs, Expressjs, MySQL, lodash, jQuery, Jade, Supervisor, Passport for Google & Facebook logins, canvas + Cairo for server-side game screenshots, Pushbullet, Twitter's API</p>
+				</div>
+				<div>
+					<a href="http://jnvm.github.io/diyfractal">
+						<img src="https://pbs.twimg.com/profile_images/653771314507845632/5iCRj6Zj_400x400.png">
+						<h3>DIYFractal</h3>
+					</a>
+					<a href="http://twitter.com/diyfractal" tweet>@DIYFractal</a>
+					<p>Create, color, share, screenshot, and animate into .webms user-generated complex (but not necessarily complicated!) fractals with a WYSIWYG equation editor.</p>
+					<p>User-familiar infix notation is converted to a GLSL webgl shader, rendering dramatically faster than CPU + web workers, at the cost of a loss of precision on GPU.  Speed made front-end webm generation feasible by tweening individual variables.</p>
+					<p>Things used: Three.js, Whammy.js, lodash, async, jQuery, qtip2, Sass, LeafletJS, MathQuill.  Previous iterations: Google Maps, MathJax, web workers, AWS Lambdas</p>
+				</div>
+			</div>
+			<div id=dayjob>
+				<div id=nda >[NDA]</div>
+				<h3>Dayjob</h3>
+				<p>Senior developer for a small dev shop.  Primary project has been me as (until very recently) the only maintainer and developer of an inherited, undocumented, 350k line custom php project with 50k lines .js, 10k .css, 11 databases, 2k tables, 900 classes, and a 30k user codebase that transacts around $1M yearly.</p>
+				<p>Things used: PHP, MySQL, javascript, css.  Libraries and frameworks explicitly disallowed despite strong recommendations.</p>
+				<p>The need for a sister system arose, which was written in Node retaining necessary entity relationships in 1.5% SLOC of original.</p>
+				<p>Things used: Nodejs, Expressjs, jQuery, async, lodash, MySQL, Jade, Sass, Traceur, Supervisor, myriad others</p>
+				<p>This experience has made me prefer simplicity in code wherever possible.</p>
+				<p>Currently training replacment, who should have a much better time managing it than I.</p>
+				<p>Otherwise, I review code, am frequently asked for advice on how to do things or debug problems, address other client project issues, and manage hours quotas for various projects.</p>
+			</div>
+		</div>
+	</body>
+</html>
