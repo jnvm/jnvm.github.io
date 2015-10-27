@@ -1,6 +1,7 @@
 <!doctype>
 <html>
 	<head>
+	<meta name="viewport" content="width=device-width, user-scalable=yes">
 	<style>
 html,body{padding:0;margin:0;border-box;font-family:arial;font-size:13px;}
 
@@ -59,8 +60,9 @@ html{background:#aaa;}
     top: 50px;
 }
 
-video{
+#bk{
 	object-fit:cover;
+	background-size:cover;
 	position:absolute;
 	z-index:0;
 	left:0;
@@ -77,28 +79,43 @@ h1,h2{
 	</style>
 	</head>
 	<body>
-		<video autoplay preload ></video>
 		<script>
 			var webms=[
+					//top 3 have black posters
 					 "http://giant.gfycat.com/ExaltedFlawedAfghanhound.webm"
 					,"http://giant.gfycat.com/NeighboringPeskyAfricanhornbill.webm"
-					,"http://giant.gfycat.com/CommonRespectfulEwe.webm-l"
 					,"http://giant.gfycat.com/BlushingHoarseBedbug.webm"
+					,"http://giant.gfycat.com/CommonRespectfulEwe.webm-l"
 					,"http://zippy.gfycat.com/FrigidOpenKatydid.webm-l"
 					,"http://giant.gfycat.com/DecisiveBigheartedIguanodon.webm-l"
-					//,"http://giant.gfycat.com/FormalIdealGartersnake.webm-l"
+					,"http://giant.gfycat.com/KnobbyHeartfeltIguanodon.webm-l"
+					,"http://giant.gfycat.com/FormalIdealGartersnake.webm-l"
 				]
 				,last=(localStorage.lastWebm||0)*1
-				,webm=webms[last%webms.length]
-				,vid=document.getElementsByTagName("video")[0]
+				,tag=window.innerWidth>960?"video":"img"
+			if(tag=="img") webms=webms.slice(3)
+			var webm=webms[last%webms.length]
+				,bk=document.createElement(tag)
+			bk.setAttribute("id","bk")
 			localStorage.lastWebm=++last
+			
+			if(tag=="video"){
+				bk.setAttribute("autoplay","autoplay")
+				bk.setAttribute("preload","preload")
+				bk.playbackRate=.75
+			}
+			else{
+				bk.style.webkitFilter="blur(5px)"
+				webm=webm.replace(/\/\w+\./,'/thumbs.')
+						.replace(/.webm.*$/,'-poster.jpg')
+			}
 			if(webm.match("-l")){
 				webm=webm.split("-")[0]
-				vid.setAttribute("loop","loop")
-				vid.style.webkitFilter="blur(5px)"
+				bk.setAttribute("loop","loop")
+				if(tag=="video") bk.style.webkitFilter="blur(5px)"
 			}
-			vid.playbackRate=.75
-			vid.setAttribute("src",webm)
+			bk.setAttribute("src",webm)
+			document.body.appendChild(bk)
 		</script>
 		<div id=page>
 			<img src="https://lh3.googleusercontent.com/-TW_3WMn-6oI/UpqUDuVypyI/AAAAAAAADDk/eAk7kOPYfD4/s64-Ic42/" style="-webkit-filter: invert(100%) drop-shadow(0 0 2px #000);">
@@ -113,7 +130,7 @@ h1,h2{
 					<a href="http://twitter.com/Anadromeo" tweet>@Anadromeo</a>
 					<p>A mobile-friendly omnidirectional scrabble variant with 40 new bonus tiles, a board editor fed by a tile inventory mechanic, and definitions provided per turn. Scores may require scientific notation.</p>
 					<p>Bot player "Lux" will beat you: he always finds the highest-scoring turn in a board of arbitrary size, tile configuration, letter placement and rack letter availability.</p>
-					<p>Things used: Nodejs, Expressjs, MySQL, lodash, jQuery, Jade, Supervisor, Passportjs for Google & Facebook logins, canvas + Cairo for server-side game screenshots, Pushbullet, Twitter's API</p>
+					<p>Things used: Nodejs, Expressjs, MySQL, lodash, jQuery, Jade, Supervisor, Passportjs for Google & Facebook logins, canvas + Cairo for server-side game screenshots, Pushbullet, Twitter's API.</p>
 				</div>
 				<div>
 					<a href="http://jnvm.github.io/diyfractal">
@@ -123,7 +140,7 @@ h1,h2{
 					<a href="http://twitter.com/diyfractal" tweet>@DIYFractal</a>
 					<p>Create, color, share, screenshot, and animate into .webms user-generated complex (but not necessarily complicated!) fractals with a WYSIWYG equation editor.</p>
 					<p>User-familiar infix notation is converted to a GLSL webgl shader, rendering dramatically faster than CPU + web workers, at the cost of a loss of precision on GPU.  Speed made front-end webm generation feasible by tweening individual variables.</p>
-					<p>Things used: Three.js, Whammy.js, lodash, async, jQuery, qtip2, Sass, LeafletJS, MathQuill.  Previous iterations: Google Maps, MathJax, web workers, AWS Lambdas</p>
+					<p>Things used: Three.js, Whammy.js, lodash, async, jQuery, qtip2, Sass, LeafletJS, MathQuill.  Previous iterations: Google Maps, MathJax, web workers, AWS Lambdas.</p>
 				</div>
 			</div>
 			<div id=dayjob>
@@ -132,7 +149,7 @@ h1,h2{
 				<p>Senior developer for a small dev shop.  Primary project has been me as (until very recently) the only maintainer and developer of an inherited, incomplete, undocumented, 350k line custom php project with 50k lines .js, 10k .css, 11 databases, 2k tables, 900 classes, and a 30k user codebase that transacts around $1M yearly.</p>
 				<p>Things used: PHP, MySQL, javascript, css.  Libraries and frameworks explicitly disallowed despite strong recommendations.</p>
 				<p>The need for a sister system arose, which was written in Node retaining necessary entity relationships in 1.5% SLOC of original.</p>
-				<p>Things used: Nodejs, Expressjs, jQuery, async, lodash, MySQL, Jade, Sass, Traceur, Supervisor, myriad others</p>
+				<p>Things used: Nodejs, Expressjs, jQuery, async, lodash, MySQL, Jade, Sass, Traceur, Supervisor, myriad others.</p>
 				<p>This experience has made me prefer simplicity in code wherever possible.</p>
 				<p>Currently training replacment, who should have a much better time managing it than I.</p>
 				<p>Otherwise, I review code, am frequently asked for advice on how to do things or debug problems, address other client project issues, and manage hours quotas for various projects.</p>
