@@ -730,14 +730,16 @@ var face={
 						
 						async.series(ops,->{
 							$("#videoUrl").remove()
-							$("<a />")
-								.attr({
-									 id: "videoUrl"
-									,href: URL.createObjectURL(video.compile())
-									,target:"_blank"
-								})
-								.html("View!")
+							var a=$("<a id=videoUrl />").html("encoding...")
 								.insertAfter(me)
+							video.compile(false,->(webm){
+								a.attr({
+										 id: "videoUrl"
+										,href: URL.createObjectURL(webm)
+										,target:"_blank"
+									})
+									.html("View!")
+							})
 						})
 					})
 			).appendTo("#freevars>.stuff")
