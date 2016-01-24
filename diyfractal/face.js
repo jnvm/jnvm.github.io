@@ -304,17 +304,17 @@ var face={
 			//preload ls into face
 			face.colorings=JSON.parse(localStorage.colorings||"{}")
 			face.formulas=JSON.parse(localStorage.formulas||"{}")
-			
+
 			//add remote
 			localStorage.colorings=JSON.stringify(_.extend(json.colorings||{},face.colorings))
 			localStorage.formulas=JSON.stringify(_.extend(json.formulas||{},face.formulas))
-			
+
 			//re-load ls into face
 			face.colorings=JSON.parse(localStorage.colorings||"{}")
 			face.formulas=JSON.parse(localStorage.formulas||"{}")			
-			
+
 			face.render.webglInit()
-			
+
 			//init some math
 			initTex2Asciimath([])
 			jsep.removeBinaryOp("^")
@@ -325,6 +325,7 @@ var face={
 			//make makey-part of interface
 			face.makeInputs()
 			//prefill last values
+
 			var lastVals=localStorage.lastVals
 				? JSON.parse(localStorage.lastVals)
 				: {
@@ -359,7 +360,7 @@ var face={
 					localStorage.colorings=JSON.stringify(face.colorings)
 					localStorage.formulas=JSON.stringify(face.formulas)
 					localStorage.lastCoord=JSON.stringify(map.getCoords())
-					face.db.put()
+					//face.db.put()
 				})
 				//make box-zooming a little more obvious? Doesn't help at all
 				.on("keydown keypress",function(e){ if(e.shiftKey) $("#map").addClass("shift-down") })
@@ -424,8 +425,11 @@ var face={
 		})
 	},
 	db:{
-		 url:"https://api.myjson.com/bins/1hhtu"
-		,get:->(done){ $.get(face.db.url,done) }
+		 url:"https://api.myjson.com/bins/1hhtu"//bye
+		,get:->(done){
+			//$.get(face.db.url,done)
+			done({"colorings":{"Mild Shazam":{"r":"im((norm(c)))+10*v^(.5)","g":"1","b":"v^(.00625)","colorform":"HSL"},"Scaly":{"r":"arctan ((z^m))^(.2)+10* v^v","g":"1","b":"v^(.01)","colorform":"HSL"},"Lasered":{"r":"arccos((z^(v^(.1))))^(.1)+10*v^v","g":"1","b":"v^(.01)","colorform":"HSL"},"Scales 2":{"r":"arctan(arctan(z^4))*10*v^v","g":"1","b":"v^(0.01)","colorform":"HSL"},"Clasp":{"r":"10*v^v","g":"v^(0.25)*log(c*m)","b":"1-(z/m)","colorform":"HSL"},"Wacko":{"r":"10*v^(0.1)","g":"v^(0.25)*log(c*m)+v^(0.5)*sin(c^2)^2","b":"((z/m)-(tan(c)/m))^3","colorform":"HSL"},"Blorch":{"r":"2*arctan(v^c+tan(0.1*z)^2)","g":"v^(0.25)*log(c*m)+c^v","b":"1-(z/m)","colorform":"HSL"},"Rainbow Spotlight":{"r":"(norm(c)+(10*(v^(sin(v)^2))))","g":"1","b":"(100*v)","colorform":"HSL"}},"formulas":{"Metroid":"((((z^12)+z)+(c^z))/(c+z))","Mandelbrot":"((z^2)+c)","Wing Heart Chamber":"(((z^2)-(i*c))^(((z^2)-(i*c))^(((z^2)-(i*c))^((z^2)-(i*c)))))","Floopdelbrots":"(cos(sin(z))-(c*i))","Unusually Interesting 7pt Swirlies":"(((z^8)+c)+(1+(sin(5.7470703125)*z)))","Bubble Rocket":"(log((((3^z)+(4^z))+c))/(((z^2)+1)-c))","That's Weird":"((((z+(z^2))+(z^(1+(log(c)^z))))+(1/c))+(1/(c^2)))","Plus Primitive":"(log((z+(c^4)))^-2)","Plumbus":"log(((z^2)+c))"},"lastCoord":{"x":-1.461108684539795,"y":-0.474759578704834,"z":2097152,"w":0.0006461143493652344,"h":0.0003638267517089844,"mzl":20},"lastVals":{"preset-formula":null,"preset-coloring":"{\"r\":\"im((norm(c)))+10*v^(.5)\",\"g\":\"1\",\"b\":\"v^(.00625)\",\"colorform\":\"HSL\"}","antiAlias":false,"P":"0","Q":"0","R":"0","iterations":"1000","x":"-1.46111","xw":"3.23057e-4","y":"-0.47476","yh":"1.81913e-4","colorform":"HSL","formula":"(((((z^2)+1)/((c^2)-2))+(((c^4)-2)/((z^4)+1)))+1)","r":"(im(norm(c))+(10*(v^0.5)))","g":"1","b":"(v^0.00625)"}})
+		}
 		,put:->(done){
 			//first get what's there right now
 			face.db.get(->(json){
@@ -435,7 +439,7 @@ var face={
 				//then merge with what I have
 				_.extend(json.colorings,face.colorings)
 				_.extend(json.formulas,face.formulas)
-				
+
 				//then save. Lessens chance I'll overwrite someone else's content
 				$.ajax({
 					url: face.db.url
@@ -557,7 +561,7 @@ var face={
 				alert("That name's already taken, try a different one.")
 
 			if(val!=undefined && x) set[x]=val
-			face.db.put()
+			//face.db.put()
 			buildPresets()
 			return x
 		}
