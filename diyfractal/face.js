@@ -716,34 +716,35 @@ var face={
 							,rangeInput=me.closest(".freevar").find("input[type=range]")
 							,vmin=rangeInput.attr("min")*1
 							,vmax=rangeInput.attr("max")*1
-							,frames=~~max(prompt("Frames to put between "+vmin+" → "+vmax+" for "+v+"?",64),1)
+							,frames=~~max(prompt("Frames to put between "+vmin+" → "+vmax+" for "+v+" @ 60fps?",64),1)
 							,range=vmax-vmin
 							,inc=range/frames
 							,vi=vmin
-							,video = new Whammy.Video(30,1)
+							,imgframes=[]
 							,ops=fill(frames).map(->{
 								return ->(next){
 									face.input[V].add(rangeInput).val(vi)
 									map.redraw(true,->{
-										video.add(map.toImage("canvas"))
+										var c=map.toImage("canvas")
+										console.log(c.width)
+										imgframes.push(c.toDataURL('image/webp', .75))
 										vi+=inc
 										next()
 									})
 								}
 							})
 						
+						$("#videoUrl").remove()
 						async.series(ops,->{
-							$("#videoUrl").remove()
-							var a=$("<a id=videoUrl />").html("encoding...")
-								.insertAfter(me)
-							video.compile(false,->(webm){
-								a.attr({
-										 id: "videoUrl"
-										,href: URL.createObjectURL(webm)
-										,target:"_blank"
-									})
-									.html("View!")
-							})
+							var a=$("<a id=videoUrl />").html("encoding...").insertAfter(me)
+								,fps=60
+								,webm=new Whammy.fromImageArray(imgframes,fps)
+							a.attr({
+									 id: "videoUrl"
+									,href: URL.createObjectURL(webm)
+									,target:"_blank"
+								})
+								.html("View!")
 						})
 					})
 			).appendTo("#freevars>.stuff")
@@ -1066,7 +1067,7 @@ var face={
 						
 						
 					//now...crop to match what the user sees
-					var m=$("#map")
+					var m=$("#mapholder")
 						,mo=m.offset()
 						,uwh={width:m.width(),height:m.height()}
 						,cropped=$("<canvas />").css(uwh).attr(uwh)
