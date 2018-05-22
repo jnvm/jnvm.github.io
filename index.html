@@ -171,9 +171,9 @@ body:after {
 			localStorage.lastWebm=++last
 			
 			if(tag=="video"){
-				//bk.setAttribute("autoplay","autoplay")
 				bk.setAttribute("muted","")
 				bk.setAttribute("preload","metadata")
+				bk.setAttribute("autoplay","autoplay")
 				//bk.playbackRate=.5
 				webm=webm.replace(/\/\w+\./,'/thumbs.')
 						.replace(/.webm.*$/,'-mobile.mp4')
