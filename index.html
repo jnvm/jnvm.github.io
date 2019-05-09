@@ -12,6 +12,12 @@ html {box-sizing: border-box; }
   text-align: inherit;
 }
   
+:root{
+	--fast:.125s;
+	--slow:.5s;
+	--fore:calc(4/3);
+	--aft:calc(.5);
+}
   
 html{background:#aaa;}
 #page{
@@ -35,7 +41,7 @@ section{
 	margin: 10px;
 	background-color: rgba(255,255,255,.90);	
 	vertical-align: top;
-	transition:background-color ease-in .125s ;
+	transition:background-color ease-in var(--fast) ;
 	position: relative;
     overflow: hidden;
 }
@@ -88,21 +94,98 @@ h1,h2{
     font-style: italic;
 }
 
-h2 a{font-weight:normal;color:#fff;text-decoration:none;font-family:monospace;font-size:2em;}
-h2 *{vertical-align:middle;padding:0 .25em;}
-svg#icon{
-width: 64px;
-height: 64px;
--webkit-filter: drop-shadow(0px 0px 1px #000000);
--moz-filter: drop-shadow(0px 0px 1px #000000);
+h2>*{
+	font-weight:normal;
+	color:#fff;
+	text-decoration:none;
+	text-align:center;
+	vertical-align:middle;
+	font-family:monospace;
+	font-size:50px;
+	display:inline-block;
+	position:relative;
+	text-shadow:none!important;
+	display:inline-block;
+	padding:0;
+	margin:0;
+}
+h2>*:before{
+	content:attr(content);
+	color:transparent;
+	position:absolute;
+	left:0;
+	top:0;
+	padding:0;
+	margin:0;
+	z-index:-1;
+	text-shadow:0 0 0px #0009;
+}
+h2>[title],
+h2>[title]:before{
+	transition:
+		 transform   ease-out var(--slow)
+		,text-shadow ease-out var(--slow);
+}
+h2>[title]:hover{
+	transform:scale(var(--fore));
+	transition:
+		 transform   ease-in var(--fast)
+		,text-shadow ease-in var(--fast);
+}
+h2>[title]:hover:before{
+	transform:scale(var(--aft));
+	text-shadow:0 0px .15em #0009;
+	transition:
+		 transform   ease-in var(--fast)
+		,text-shadow ease-in var(--fast);
+}
+h2>#icon-holder{
+	position:relative;
+	margin:0 .5em;
+	width:1em;
+	height:1em;
+}
+h2>#icon-holder>*{
+	width:100%;
+	height:100%;
+	position:absolute;
+	left:0;
+	top:0;
+}
+h2>#icon-holder      >#icon{
+	opacity:1;
+	transform:scale(1);
+	filter: invert(100%);
+	transition:
+		transform ease-out var(--slow);
+}
+h2>#icon-holder:hover>#icon{
+	opacity:1;
+	transform:scale(var(--fore));
+	transition:
+		transform ease-in var(--fast);
+}
+h2>#icon-holder      >#icon-shadow{
+	opacity:.5;
+	transform:scale(1);
+	filter:brightness(-100%) blur(0px);
+	transition:
+		transform ease-out var(--slow)
+		,filter   ease-out var(--slow)
+		,opacity  ease-out var(--slow);
+}
+h2>#icon-holder:hover>#icon-shadow{
+	opacity:.5;
+	transform:scale(var(--aft));
+	filter:brightness(-100%) blur(2px);
+	transition:
+		transform ease-in var(--fast)
+		,filter   ease-in var(--fast)
+		,opacity  ease-in var(--fast);
 }
 
-#icon {
-    animation:spin 10s linear infinite;
-}
-@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
-@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
-@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
+#icon-holder{animation:spin 10s linear infinite!important;}
+@keyframes spin { 100% { transform:rotate(360deg); } }
 
 body:after {
     background-image: linear-gradient(180deg,#000 0,rgba(0,0,0,0) 100px);
@@ -125,6 +208,7 @@ body:after {
     font-weight: bold;
     text-transform: uppercase;
     width: 100px;
+    height:2em;
     text-align: center;
     line-height: 2em;
     transform-origin: 50% 0;
@@ -135,15 +219,40 @@ body:after {
     padding:0;
     margin:0;
 }
+
+
+/*,*:before,*:after{outline:solid red 1px;}*/
 	</style>
+		<svg style="width:0;height:0;" viewBox="0 0 21 21" >
+			<symbol id=logo>
+				<symbol id="jo">
+					<mask id="o">
+						<rect width="21" height="21" fill="#fff" />
+						<circle r="1.5" cx="10.5" cy="17.5" fill="#000"/>
+					</mask>
+					<mask id="j">
+						<rect width="21" height="21" fill="#fff" />
+						<circle r="1.5" cx="3.5" cy="17.5" fill="#000"/>
+						<rect width="3.5" height="3" fill="#000" x="0" y="16"/>
+					</mask>
+					<circle cx="03.5" cy="17.5" r="3.5" fill="#000" mask="url(#j)"/>
+					<circle cx="10.5" cy="17.5" r="3.5" fill="#000" mask="url(#o)"/>
+				</symbol>
+				<use xlink:href="#jo"/>
+				<use xlink:href="#jo" transform="rotate(090,10.5,10.5)"/>
+				<use xlink:href="#jo" transform="rotate(180,10.5,10.5)"/>
+				<use xlink:href="#jo" transform="rotate(270,10.5,10.5)"/>
+			</symbol>
+		</svg>
 	</head>
 	<body>
 		<script>
 			var webms=[
-					//top 3 have black posters
+					//top have black posters
 					 "http://giant.gfycat.com/FavorableHarmoniousHapuka.webm"
 					,"http://giant.gfycat.com/SparseHelpfulBlackmamba.webm"
 					,"http://fat.gfycat.com/RashWebbedHoneybee.webm"
+					,"http://giant.gfycat.com/EnlightenedHeartfeltHoopoe.webm"
 					,"http://giant.gfycat.com/FluidUncomfortableFruitbat.webm"
 					//,"https://giant.gfycat.com/KindOpenGiantschnauzer.webm"
 					,"http://zippy.gfycat.com/HelpfulRectangularGnu.webm"
@@ -164,45 +273,57 @@ body:after {
 				]
 				,last=(localStorage.lastWebm||0)*1
 				,tag=window.innerWidth>960?"video":"img"
-			if(tag=="img") webms=webms.slice(8)
-			var webm=webms[last%webms.length]
-				,bk=document.createElement(tag)
-			bk.setAttribute("id","bk")
-			localStorage.lastWebm=++last
-			
-			if(tag=="video"){
-				//bk.setAttribute("autoplay","autoplay")
-				bk.setAttribute("preload","metadata")
-				//bk.playbackRate=.5
-				webm=webm.replace(/\/\w+\./,'/thumbs.')
+					//,tag="img"
+				,blanks=8//top n are empty stills
+				,getNextSrc=function(){
+					var next=webms[last%webms.length]
+					localStorage.lastWebm=++last
+					if(next.match("-l")){
+						next=next.split("-")[0]
+						bk.setAttribute("loop","loop")
+					}
+					else bk.removeAttribute("loop")
+
+					return next.replace(/\/\w+\./,'/thumbs.')
 						.replace(/.webm.*$/,'-mobile.mp4')
+				}
+				
+			if(tag=="img") webms=webms.slice(blanks)
+			var  bk=document.createElement(tag)
+				,webm=getNextSrc()
+
+			if(tag=="video"){
+				0 && bk.addEventListener('ended',function(){
+					setTimeout(function(){
+						bk.src=getNextSrc()
+					},5e3)
+				})
+				bk.style.filter="blur(2px)"
 			}
 			else{
-				bk.style.webkitFilter="blur(5px)"
+				//bk.style.webkitFilter="blur(5px)"
 				webm=webm.replace(/\/\w+\./,'/thumbs.')
 						.replace(/.webm.*$/,'-poster.jpg')
+						//.replace(/.webm.*$/,'.webp')
 			}
-			if(webm.match("-l")){
-				webm=webm.split("-")[0]
-				bk.setAttribute("loop","loop")
-				
-			}
-			//if(tag=="video") bk.style.webkitFilter="blur(5px)"
 			
- 
-			bk.setAttribute("src",webm)
+			bk.id="bk"
+			bk.src=webm
 			document.body.appendChild(bk)
-			//bk.oncanplaythrough=function(){this.play()}
-			bk.addEventListener( "canplaythrough", function(){this.play()} )
-			//bk.playbackRate=.5
+			;'playsinline preload autoplay muted'.split(' ').forEach(function(attr){
+				bk.setAttribute(attr,'true')
+			})
 			
+			bk.addEventListener( "canplaythrough", function(){this.play()} )
 		</script>
 		<div id=page>
-			<!--<img src="https://lh3.googleusercontent.com/-TW_3WMn-6oI/UpqUDuVypyI/AAAAAAAADDk/eAk7kOPYfD4/s64-Ic42/" style="-webkit-filter: invert(100%) drop-shadow(0 0 2px #000);">-->
 			<h2>
-				<a href="mailto:j@nvm.io" title=j@nvm.io>✉</a>
-				<svg id=icon xmlns="http://www.w3.org/2000/svg" version="1.0" width="900.000000pt" height="900.000000pt" viewBox="0 0 900.000000 900.000000" preserveAspectRatio="true"><g transform="translate(0.000000,900.000000) scale(0.100000,-0.100000)" fill="#ffffff" stroke="none" style="&#10;    /* -webkit-filter: drop-shadow(0px 10px 10px red); */&#10;"><path d="M4418 8375 c-2 -2 -33 -6 -69 -9 -252 -20 -557 -167 -754 -363 -63 -62 -225 -269 -225 -287 0 -2 -18 -43 -41 -91 -22 -48 -51 -124 -63 -169 -37 -130 -40 -142 -51 -260 -6 -67 -15 -86 -16 -35 -2 78 -8 130 -23 190 -9 35 -18 74 -21 87 -10 52 -22 83 -86 217 -50 104 -112 199 -185 281 -63 72 -65 73 -164 156 -61 51 -239 163 -246 155 -2 -2 -4 -269 -5 -593 0 -324 -5 -615 -10 -647 -68 -413 -538 -607 -874 -360 -106 77 -194 216 -211 330 -3 26 -8 57 -11 68 -2 11 -4 287 -4 613 0 325 -2 592 -4 592 -17 0 -229 -137 -266 -172 -26 -24 -62 -56 -81 -73 -19 -16 -62 -64 -94 -105 -32 -41 -62 -77 -65 -80 -3 -3 -31 -52 -63 -110 -60 -109 -129 -300 -140 -386 -3 -27 -9 -62 -13 -79 -15 -66 -5 -312 16 -408 12 -50 23 -102 26 -114 11 -61 106 -259 168 -352 70 -105 225 -272 284 -306 18 -11 33 -23 33 -27 0 -4 6 -8 13 -8 8 0 22 -9 32 -20 40 -44 299 -156 409 -176 16 -2 36 -8 45 -13 9 -4 34 -9 56 -10 22 -2 54 -5 70 -6 17 -2 45 -3 64 -4 55 -2 30 -11 -45 -17 -99 -7 -108 -9 -224 -39 -683 -181 -1093 -889 -911 -1577 74 -282 259 -549 496 -719 147 -105 411 -211 560 -225 112 -11 138 -14 143 -19 3 -3 -15 -5 -39 -6 -209 -5 -454 -91 -666 -235 -36 -24 -178 -149 -199 -174 -85 -103 -118 -148 -162 -224 -29 -49 -51 -90 -49 -92 2 -2 269 -4 593 -5 427 0 608 -4 659 -13 78 -14 204 -70 250 -111 17 -15 35 -30 40 -33 27 -19 90 -110 120 -176 61 -134 64 -296 8 -429 -58 -136 -171 -250 -301 -303 -37 -14 -76 -28 -87 -29 -11 -2 -43 -6 -70 -10 -28 -3 -312 -6 -632 -7 -321 0 -583 -2 -583 -5 0 -21 134 -220 192 -286 69 -78 233 -221 287 -249 14 -7 57 -30 96 -51 77 -42 280 -113 348 -121 23 -3 74 -10 112 -15 174 -24 428 13 620 91 125 52 296 162 398 258 235 222 390 567 396 879 1 56 10 30 16 -49 10 -114 11 -118 38 -221 60 -228 169 -418 336 -586 245 -245 565 -378 911 -377 271 0 517 77 738 231 102 71 245 210 298 288 18 28 46 68 61 90 42 60 119 238 147 340 28 104 34 134 41 229 6 82 15 99 16 30 3 -172 86 -443 177 -578 18 -26 32 -49 32 -51 0 -14 107 -149 166 -209 16 -16 104 -89 128 -106 12 -8 26 -19 31 -26 13 -14 187 -116 191 -111 2 2 4 266 5 588 0 624 4 682 50 789 84 197 288 333 499 333 123 0 252 -43 344 -115 98 -76 187 -220 201 -325 4 -26 9 -61 12 -78 2 -16 4 -292 5 -612 0 -321 2 -583 5 -583 7 0 207 121 213 129 3 3 34 31 70 61 36 30 72 61 80 70 37 37 157 192 175 227 11 21 36 67 56 103 37 67 104 265 113 335 3 22 10 72 15 110 15 103 4 282 -25 410 -51 222 -169 443 -325 609 -144 152 -380 295 -569 345 -47 13 -94 26 -105 30 -11 4 -42 9 -70 10 -27 1 -59 4 -70 6 -11 2 -35 4 -54 4 -55 1 -30 11 45 16 218 17 454 104 635 233 578 414 717 1207 312 1789 -77 111 -209 244 -312 315 -42 29 -77 56 -79 60 -2 4 -7 8 -12 8 -4 0 -52 21 -107 46 -90 43 -248 93 -333 107 -19 4 -71 9 -115 13 -93 7 -110 14 -39 15 108 2 289 33 349 60 11 5 57 24 102 43 97 40 261 140 318 193 23 21 54 49 70 63 71 60 222 267 257 353 7 16 -24 17 -566 17 -369 0 -603 4 -657 11 -143 20 -278 95 -363 203 -74 94 -124 240 -120 351 7 172 83 324 212 424 87 67 177 103 287 116 28 3 312 6 633 6 320 1 582 3 582 6 0 14 -134 223 -162 253 -18 19 -51 55 -73 80 -51 59 -206 182 -264 212 -25 12 -68 35 -94 51 -61 35 -264 102 -337 112 -30 4 -64 9 -75 11 -38 9 -200 10 -285 3 -110 -9 -267 -48 -354 -88 -38 -17 -74 -31 -81 -31 -6 0 -65 -35 -131 -78 -305 -201 -491 -472 -573 -837 -12 -55 -19 -116 -20 -184 -1 -63 -9 -47 -16 34 -11 130 -34 240 -67 330 -39 103 -131 281 -159 305 -3 3 -19 25 -36 50 -92 134 -302 303 -480 385 -100 47 -283 102 -369 110 -67 7 -251 14 -256 10z m197 -753 c307 -62 499 -377 414 -681 -55 -198 -224 -354 -426 -394 -98 -19 -210 -11 -286 22 -27 12 -53 21 -58 21 -5 0 -40 22 -77 49 -125 91 -201 217 -226 370 -6 42 -9 94 -5 116 4 22 9 58 12 80 7 62 62 172 119 237 136 158 327 222 533 180z m-1400 -642 c12 -123 14 -135 44 -241 156 -553 667 -941 1241 -942 90 -1 219 15 291 34 41 11 91 25 112 30 44 11 278 121 298 141 8 7 37 28 64 47 81 55 212 189 285 292 84 117 151 258 191 398 30 106 42 175 47 285 3 53 10 23 17 -74 4 -52 9 -98 12 -102 2 -5 6 -17 8 -28 13 -66 50 -183 77 -240 17 -36 37 -80 45 -99 28 -65 139 -214 223 -298 75 -76 278 -233 301 -233 5 0 41 -16 81 -35 73 -36 238 -89 313 -100 45 -7 103 -12 154 -14 49 -1 34 -9 -29 -16 -30 -3 -75 -7 -100 -10 -79 -8 -252 -61 -353 -109 -345 -163 -615 -492 -701 -856 -2 -8 -9 -33 -14 -55 -33 -125 -31 -395 4 -525 8 -30 16 -62 18 -70 17 -69 34 -116 76 -206 198 -423 603 -701 1074 -739 69 -6 87 -15 30 -16 -131 -2 -317 -43 -429 -94 -27 -12 -72 -33 -100 -46 -116 -53 -325 -223 -411 -334 -51 -66 -124 -175 -134 -198 -4 -12 -27 -61 -49 -109 -23 -48 -41 -94 -41 -101 0 -7 -11 -49 -24 -93 -13 -43 -27 -121 -31 -172 -8 -99 -14 -111 -21 -40 -2 24 -5 63 -8 88 -5 53 -47 217 -71 275 -105 253 -266 457 -474 600 -208 143 -482 229 -731 228 -74 0 -212 -13 -255 -25 -22 -5 -47 -12 -55 -14 -84 -20 -151 -43 -237 -84 -341 -162 -594 -461 -695 -824 -30 -111 -34 -129 -42 -240 -5 -59 -16 -90 -16 -45 -2 134 -47 333 -102 449 -17 36 -37 80 -45 99 -27 62 -137 211 -219 295 -82 84 -250 211 -314 239 -19 8 -64 28 -100 45 -119 56 -300 98 -439 101 -52 1 -31 11 35 16 107 9 128 13 239 43 220 60 426 182 585 348 431 449 483 1129 125 1637 -168 240 -421 418 -704 498 -107 30 -133 34 -250 44 -77 6 -92 15 -30 16 65 1 141 8 169 16 14 3 30 7 35 9 255 61 457 171 631 343 86 85 209 247 237 311 8 19 28 64 45 100 27 57 56 150 82 260 8 35 18 131 19 184 1 47 8 26 16 -44z m3990 -1943 c38 -5 174 -60 185 -75 3 -4 27 -24 53 -46 49 -39 120 -127 136 -168 58 -147 70 -232 46 -352 -60 -318 -390 -517 -697 -422 -43 14 -98 38 -123 55 -25 17 -49 31 -53 31 -4 0 -33 28 -64 62 -272 298 -162 752 217 898 36 14 53 18 119 25 28 3 52 7 54 9 1 2 22 0 45 -4 23 -5 60 -10 82 -13z m-5130 -11 c83 -24 170 -79 236 -148 58 -61 125 -179 134 -238 3 -19 9 -48 14 -65 13 -50 1 -172 -25 -248 -61 -181 -239 -340 -409 -366 -50 -8 -190 -7 -230 1 -59 11 -180 69 -219 104 -21 19 -44 38 -50 42 -30 19 -100 130 -126 200 -111 299 47 619 354 718 86 28 226 28 321 0z m2600 -2593 c44 -14 96 -38 115 -53 19 -15 45 -32 57 -39 41 -21 131 -144 162 -221 24 -61 44 -161 44 -215 -1 -14 -12 -94 -20 -129 -14 -71 -72 -172 -135 -236 -65 -66 -74 -74 -119 -103 -44 -29 -169 -67 -238 -72 -57 -4 -102 1 -197 19 -47 9 -168 80 -220 129 -321 301 -171 843 259 936 104 22 189 18 292 -16z" /></g></svg>
-				<a href="https://github.com/jnvm" title=github>{}</a>
+				<a href="mailto:j@nvm.io" title=j@nvm.io content="✉">✉</a>
+				<a href="/" id=icon-holder>
+					<svg id=icon-shadow width="1em" height="1em" viewBox="0 0 21 21"><use xlink:href="#logo"></use></svg>
+					<svg id=icon        width="1em" height="1em" viewBox="0 0 21 21"><use xlink:href="#logo"></use></svg>
+				</a>
+				<a href="https://github.com/jnvm" title=github content="{}">{}</a>
 			</h2>
 			<div id=creations>
 				<section>
@@ -224,18 +345,20 @@ body:after {
 					<p class=libs>Used: Three.js, Whammy.js, lodash, async, jQuery, qtip2, Sass, LeafletJS, MathQuill.  Previous iterations: Google Maps, MathJax, web workers, AWS Lambdas.</p>
 				</section>
 			</div>
-			<div id=employment>
+			<div id="employment">
 				<section>
-					<div id=um >[day jobs]</div>
-					<p><b>2016 - Present</b> - Developer on an international microservice suite replacing a legacy system handling over $4B/y.</p>
-					<p class=libs>Used: Nodejs, Postgres, React, Angular, Docker, chai, lodash, hapi, istanbul, mocha, travis, joi, less, handlebars and many more.</p>
+					<div id="um">[day jobs]</div>
+					<p><b>2018 - Present</b> - Senior developer & team lead on a microservice suite aggregating and analyzing colossal biological data sets to advise medical professionals.</p>
+					<p class="libs">Used: Nodejs, MySQL, Sqlite, GraphQL, React, Redux, Webpack, Babeljs, Lodash, Jest, Cytoscape, various AWS services, and myriad proprietary tools</p>
+					<p><b>2016 - 2018</b> - Developer on a multi-million SLOC, 3-digit repo count microservice suite replacing a legacy system handling over $2B/y.  Focus eventually became, again, completely rewriting the replacement system to 1% SLOC to unambiguously improve every aspect of it and developer experience.</p>
+					<p class="libs">Used: Nodejs, Postgres, React, Angular, Docker, chai, lodash, hapi, istanbul, mocha, travis, joi, less, handlebars and many more.</p>
 					<p><b>2011 - 2016</b> - Senior developer for a small dev shop. Eventually made head of department.  Primary project had been principal development on an inherited, once incomplete, undocumented, 350k line custom php project with 50k lines .js, 10k .css, 11 databases, 2k tables, 900 classes, and a 30k user codebase that analyzes $1B sales and awards around $1M yearly.</p>
-					<p class=libs>Used: PHP, MySQL, javascript, css.  Was explicitly prohibited from using libraries, frameworks, & plugins to accommodate custom codebase.</p>
+					<p class="libs">Used: PHP, MySQL, javascript, css.  Was explicitly prohibited from using libraries, frameworks, &amp; plugins to accommodate custom codebase.</p>
 					<p>The need for a sister system arose, which was written in Node retaining necessary entity relationships in 1.5% SLOC of original.</p>
-					<p class=libs>Used: Nodejs, Expressjs, jQuery, async, lodash, MySQL, Jade, Sass, Traceur, Supervisor, myriad others.</p>
+					<p class="libs">Used: Nodejs, Expressjs, jQuery, async, lodash, MySQL, Jade, Sass, Traceur, Supervisor, myriad others.</p>
 					<p>This experience has made me prefer simplicity in code wherever possible.</p>
 					<p>Otherwise, I wrote custom plugins for and maintained wordpress, drupal, and magento sites for ≈200 clients. I reviewed code, was frequently asked for advice on how to do things or debug problems, addressed other client project issues, and managed hours quotas and reviews for various projects and employees.</p>
-					<p><b>2009 - 2010</b> - Helped make youtube engineering outreach videos with professor at university; I can also film & edit with Final Cut Pro.</p>
+					<p><b>2009 - 2010</b> - Helped make youtube engineering outreach videos with professor at university; I can also film &amp; edit with Final Cut Pro.</p>
 					<p><b>2006 - 2009</b> - 3D modeling head lab assistant at university; I can <a href="https://lh3.googleusercontent.com/-EiCwXhUStGk/SfzXibCAx4I/AAAAAAAAATw/maB_ZnL37ak/s912-Ic42/Rod%252520Blue.png">also</a> <a href="https://lh3.googleusercontent.com/-ghBledI7AnA/SfzXiUjhiVI/AAAAAAAAATo/8wrw51W13L8/s912-Ic42/Connector%252520Gray.png">3D</a> <a href="https://lh3.googleusercontent.com/-bgC4zXjggiQ/SfzWPwKAwcI/AAAAAAAAATQ/iU3gr0dZZLg/s720-Ic42/gi2.png">model</a>.  Also rewrote a online physics homework system used by thousands of students.</p>
 				</section>
 			</div>
