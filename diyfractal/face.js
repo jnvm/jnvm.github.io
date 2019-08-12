@@ -5,7 +5,6 @@
 //add way to animate map coord & zoom & iterations. Could be done if properly exposed as inputs like the rest.
 //coloring backup: {"Mild Shazam":{"r":"im((norm(c)))+10*v^(.5)","g":"1","b":"v^(.00625)","colorform":"HSL"},"Scaly":{"r":"arctan ((z^m))^(.2)+10* v^v","g":"1","b":"v^(.01)","colorform":"HSL"},"Lasered":{"r":"arccos((z^(v^(.1))))^(.1)+10*v^v","g":"1","b":"v^(.01)","colorform":"HSL"},"Scales 2":{"r":"arctan(arctan(z^4))*10*v^v","g":"1","b":"v^(0.01)","colorform":"HSL"},"Clasp":{"r":"10*v^v","g":"v^(0.25)*log(c*m)","b":"1-(z/m)","colorform":"HSL"},"Wacko":{"r":"10*v^(0.1)","g":"v^(0.25)*log(c*m)+v^(0.5)*sin(c^2)^2","b":"((z/m)-(tan(c)/m))^3","colorform":"HSL"},"Blorch":{"r":"2*arctan(v^c+tan(0.1*z)^2)","g":"v^(0.25)*log(c*m)+c^v","b":"1-(z/m)","colorform":"HSL"}}
 
-//var MQ = MathQuill.getInterface(2);
 
 ->shaderScope(){/*
 	uniform float scale;
@@ -293,7 +292,6 @@ $.extend({
 			return me
 		}
 	}
-	//,mathquill:->(opts){ return MQ.MathField(this) }
 })
 //prep plugin
 $.extend($.fn.qtip.defaults.position,{my: 'bottom center',at: 'top center'})
@@ -828,8 +826,6 @@ var face={
 	expression:{
 		toCanvas:->(done){
 			var x=$(".expression-holder").addClass("picmode")
-			var w=x.width()
-			var h=x.height()
 			html2canvas(x[0],{allowTaint:true,scale:1}).then(function(canvas) {
 				x.removeClass("picmode")
 				//plugin is doing something bizarre with the canvas making manipulation confusing, just tranfer the img & proceed
@@ -1245,9 +1241,7 @@ var face={
 									//apply backdrop
 									ctx.fillStyle = "#000"
 									ctx.fillRect(0,0,wh.width,wh.height)
-									console.log({mapW,mapH,expW,expH,wh})
-									
-									exCanvas.setAttribute('id','zzz')
+
 									//invert math on its canvas
 									var ex=expCanvas[0].getContext('2d')
 									ex.globalCompositeOperation = "difference"
