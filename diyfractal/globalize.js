@@ -4,6 +4,7 @@ var isServer=typeof window==="undefined"
 	,window= typeof window!="undefined" && window
 		||   typeof global!="undefined" && global
 		||   typeof self  !="undefined" && self
+window.global=window
 Number.isNaN = Number.isNaN || function(value) { return typeof value === "number" && value !== value}
 Array.isArray = Array.isArray || function(arg) {return Object.prototype.toString.call(arg) === '[object Array]'}
 RegExp.escape = function(text) {return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")}
