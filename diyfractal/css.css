@@ -181,6 +181,9 @@ button {
         font-family: Symbola;
         font-size: inherit;
         width: 2.5em; }
+      .picmode .math-editor textarea{
+        border:0!important;
+      }
   #inputs .fast {
     float: right; }
   #inputs #progress {
@@ -351,7 +354,7 @@ kbd {
 #entermsg{font-size:10px;padding:0;margin:0;}
 .while{text-align:left;}
 
-
+.leaflet-control-fullscreen-button{background-position:0 0!important;}
 
 .scaled.paren {
     position: relative!important;
