@@ -138,6 +138,7 @@
 	vec2  or(vec2 a, vec2 b){return length(a)!=0.0 ? a : b;}
 	vec2  cOr(vec2 a, vec2 b){return or(a,b);}
 
+	//hyperbolics?
 	//UNFINISHED
 	vec2 gamma(vec2 a, vec2 b){
 	return vec2(0.0,0.0);
@@ -1188,7 +1189,7 @@ var face={
 		        						 })
 				        				,$("<a />")
 				        					.attr({
-				        						download:"fractal"
+				        						download:document.title.split("#").pop()
 				        						,href:blobUrl
 				        					})
 				        					.append(
@@ -1454,7 +1455,7 @@ var face={
 				,s:face.cache.state//always already calculated ..?
 			}))
 			document.title=document.title.replace(/#+.*$/,'')
-				+'#'+adjectiveAdjectiveAnimalLite()
+				+'#'+gfynonce()
 				//+location.hash.slice(0,64)
 		},250),
 		apply:->{
