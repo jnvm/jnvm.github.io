@@ -1,229 +1,228 @@
 <!doctype>
 <html>
 	<head>
-	<meta name="viewport" content="width=device-width, user-scalable=yes">
-	<link rel="icon" type="image/png" href="https://lh3.googleusercontent.com/-TW_3WMn-6oI/UpqUDuVypyI/AAAAAAAADDk/eAk7kOPYfD4/s16-Ic42/" />
-	<style>
-html,body{padding:0;margin:0;border-box;font-family:arial;font-size:13px;}
-
-html {box-sizing: border-box; }
-*, *:before, *:after {
-  box-sizing: inherit;
-  text-align: inherit;
-}
-  
-:root{
-	--fast:.125s;
-	--slow:.5s;
-	--fore:calc(4/3);
-	--aft:calc(.5);
-}
-  
-html{background:#aaa;}
-#page{
-	position:relative;
-	z-index:1;
-	max-width: 900px;
-	margin: 0 auto;
-	padding:10px;
-}
-#page>*:not(section){
-	display: block;
-	text-align: center;
-	margin: 0 auto;
-}
-
-section{
-	text-align:left;
-	display: inline-block;
-	padding: 10px;
-	box-shadow: 0 0 10px -3px #000;
-	margin: 10px;
-	background-color: rgba(255,255,255,.90);	
-	vertical-align: top;
-	transition:background-color ease-in var(--fast) ;
-	position: relative;
-    overflow: hidden;
-}
-section:hover{
-	background-color: rgba(255,255,255,1);
-}
-#creations>* {
-	/*width: calc(50% - 22px);*/
-}
-#creations img{
-	width:200px;
-	float: left;
-	margin: 10px;
-	max-width: calc(100% - 20px);
-	height:auto;
-}
-
-#um {
-	background: #000;
-	color: #fff;
-	width: 200px;
-	height: 200px;
-	vertical-align: middle;
-	text-align: center;
-	line-height: 200px;
-	font-size: 40px;
-	float: left;
-	margin: 10px;
-	top: 50px;
-}
-
-#bk{
-	object-fit:cover;
-	background-size:cover;
-	position:fixed;
-	z-index:0;
-	left:0;
-	top:0;
-	display:block;
-	width:100%;
-	height:100%;
-}
-h1,h2{
-	color: #fff;
-	text-shadow: 0 0 3px #000;
-	padding:.5em;
-	margin:0;
-}
-.libs{
-    font-style: italic;
-}
-
-h2>*{
-	font-weight:normal;
-	color:#fff;
-	text-decoration:none;
-	text-align:center;
-	vertical-align:middle;
-	font-family:monospace;
-	font-size:50px;
-	display:inline-block;
-	position:relative;
-	text-shadow:none!important;
-	display:inline-block;
-	padding:0;
-	margin:0;
-}
-h2>*:before{
-	content:attr(content);
-	color:transparent;
-	position:absolute;
-	left:0;
-	top:0;
-	padding:0;
-	margin:0;
-	z-index:-1;
-	text-shadow:0 0 0px #0009;
-}
-h2>[title],
-h2>[title]:before{
-	transition:
-		 transform   ease-out var(--slow)
-		,text-shadow ease-out var(--slow);
-}
-h2>[title]:hover{
-	transform:scale(var(--fore));
-	transition:
-		 transform   ease-in var(--fast)
-		,text-shadow ease-in var(--fast);
-}
-h2>[title]:hover:before{
-	transform:scale(var(--aft));
-	text-shadow:0 0px .15em #0009;
-	transition:
-		 transform   ease-in var(--fast)
-		,text-shadow ease-in var(--fast);
-}
-h2>#icon-holder{
-	position:relative;
-	margin:0 .5em;
-	width:1em;
-	height:1em;
-}
-h2>#icon-holder>*{
-	width:100%;
-	height:100%;
-	position:absolute;
-	left:0;
-	top:0;
-}
-h2>#icon-holder      >#icon{
-	opacity:1;
-	transform:scale(1);
-	filter: invert(100%);
-	transition:
-		transform ease-out var(--slow);
-}
-h2>#icon-holder:hover>#icon{
-	opacity:1;
-	transform:scale(var(--fore));
-	transition:
-		transform ease-in var(--fast);
-}
-h2>#icon-holder      >#icon-shadow{
-	opacity:.5;
-	transform:scale(1);
-	filter:brightness(-100%) blur(0px);
-	transition:
-		transform ease-out var(--slow)
-		,filter   ease-out var(--slow)
-		,opacity  ease-out var(--slow);
-}
-h2>#icon-holder:hover>#icon-shadow{
-	opacity:.5;
-	transform:scale(var(--aft));
-	filter:brightness(-100%) blur(2px);
-	transition:
-		transform ease-in var(--fast)
-		,filter   ease-in var(--fast)
-		,opacity  ease-in var(--fast);
-}
-
-#icon-holder{animation:spin 10s linear infinite!important;}
-@keyframes spin { 100% { transform:rotate(360deg); } }
-
-body:after {
-    background-image: linear-gradient(180deg,#000 0,rgba(0,0,0,0) 100px);
-    display: block;
-    position: absolute;
-    left: 0;
-    top: 0;
-    content: " ";
-    width: 100%;
-    height: 100%;
-    background-blend-mode: color-burn;
-}
-#creations>section:before {
-    content: "creation";
-    position: absolute;
-    right: -50px;
-    top: 0;
-    background: gold;
-    color: #000;
-    font-weight: bold;
-    text-transform: uppercase;
-    width: 100px;
-    height:2em;
-    text-align: center;
-    line-height: 2em;
-    transform-origin: 50% 0;
-    font-size: 10px;
-    transform: rotate(45deg) translate(0%,100%);
-    vertical-align: baseline;
-    outline: solid goldenrod 2px;
-    padding:0;
-    margin:0;
-}
-
-
-/*,*:before,*:after{outline:solid red 1px;}*/
-	</style>
-		<svg style="width:0;height:0;" viewBox="0 0 21 21" >
+		<meta name="viewport" content="width=device-width, user-scalable=yes">
+		<style>
+	html,body{padding:0;margin:0;border-box;font-family:arial;font-size:13px;}
+	
+	html {box-sizing: border-box; }
+	*, *:before, *:after {
+	  box-sizing: inherit;
+	  text-align: inherit;
+	}
+	  
+	:root{
+		--fast:.125s;
+		--slow:.5s;
+		--fore:calc(4/3);
+		--aft:calc(.5);
+	}
+	  
+	html{background:#aaa;}
+	#page{
+		position:relative;
+		z-index:1;
+		max-width: 900px;
+		margin: 0 auto;
+		padding:10px;
+	}
+	#page>*:not(section){
+		display: block;
+		text-align: center;
+		margin: 0 auto;
+	}
+	
+	section{
+		text-align:left;
+		display: inline-block;
+		padding: 10px;
+		box-shadow: 0 0 10px -3px #000;
+		margin: 10px;
+		background-color: rgba(255,255,255,.90);	
+		vertical-align: top;
+		transition:background-color ease-in var(--fast) ;
+		position: relative;
+		overflow: hidden;
+	}
+	section:hover{
+		background-color: rgba(255,255,255,1);
+	}
+	#creations>* {
+		/*width: calc(50% - 22px);*/
+	}
+	#creations img{
+		width:200px;
+		float: left;
+		margin: 10px;
+		max-width: calc(100% - 20px);
+		height:auto;
+	}
+	
+	#um {
+		background: #000;
+		color: #fff;
+		width: 200px;
+		height: 200px;
+		vertical-align: middle;
+		text-align: center;
+		line-height: 200px;
+		font-size: 40px;
+		float: left;
+		margin: 10px;
+		top: 50px;
+	}
+	
+	#bk{
+		object-fit:cover;
+		background-size:cover;
+		position:fixed;
+		z-index:0;
+		left:0;
+		top:0;
+		display:block;
+		width:100%;
+		height:100%;
+	}
+	h1,h2{
+		color: #fff;
+		text-shadow: 0 0 3px #000;
+		padding:.5em;
+		margin:0;
+	}
+	.libs{
+		font-style: italic;
+	}
+	
+	h2>*{
+		font-weight:normal;
+		color:#fff;
+		text-decoration:none;
+		text-align:center;
+		vertical-align:middle;
+		font-family:monospace;
+		font-size:50px;
+		display:inline-block;
+		position:relative;
+		text-shadow:none!important;
+		display:inline-block;
+		padding:0;
+		margin:0;
+	}
+	h2>*:before{
+		content:attr(content);
+		color:transparent;
+		position:absolute;
+		left:0;
+		top:0;
+		padding:0;
+		margin:0;
+		z-index:-1;
+		text-shadow:0 0 0px #0009;
+	}
+	h2>[title],
+	h2>[title]:before{
+		transition:
+			 transform   ease-out var(--slow)
+			,text-shadow ease-out var(--slow);
+	}
+	h2>[title]:hover{
+		transform:scale(var(--fore));
+		transition:
+			 transform   ease-in var(--fast)
+			,text-shadow ease-in var(--fast);
+	}
+	h2>[title]:hover:before{
+		transform:scale(var(--aft));
+		text-shadow:0 0px .15em #0009;
+		transition:
+			 transform   ease-in var(--fast)
+			,text-shadow ease-in var(--fast);
+	}
+	h2>#icon-holder{
+		position:relative;
+		margin:0 .5em;
+		width:1em;
+		height:1em;
+	}
+	h2>#icon-holder>*{
+		width:100%;
+		height:100%;
+		position:absolute;
+		left:0;
+		top:0;
+	}
+	h2>#icon-holder      >#icon{
+		opacity:1;
+		transform:scale(1);
+		filter: invert(100%);
+		transition:
+			transform ease-out var(--slow);
+	}
+	h2>#icon-holder:hover>#icon{
+		opacity:1;
+		transform:scale(var(--fore));
+		transition:
+			transform ease-in var(--fast);
+	}
+	h2>#icon-holder      >#icon-shadow{
+		opacity:.5;
+		transform:scale(1);
+		filter:brightness(-100%) blur(0px);
+		transition:
+			transform ease-out var(--slow)
+			,filter   ease-out var(--slow)
+			,opacity  ease-out var(--slow);
+	}
+	h2>#icon-holder:hover>#icon-shadow{
+		opacity:.5;
+		transform:scale(var(--aft));
+		filter:brightness(-100%) blur(2px);
+		transition:
+			transform ease-in var(--fast)
+			,filter   ease-in var(--fast)
+			,opacity  ease-in var(--fast);
+	}
+	
+	#icon-holder{animation:spin 10s linear infinite!important;}
+	@keyframes spin { 100% { transform:rotate(360deg); } }
+	
+	body:after {
+		background-image: linear-gradient(180deg,#000 0,rgba(0,0,0,0) 100px);
+		display: block;
+		position: absolute;
+		left: 0;
+		top: 0;
+		content: " ";
+		width: 100%;
+		height: 100%;
+		background-blend-mode: color-burn;
+	}
+	#creations>section:before {
+		content: "creation";
+		position: absolute;
+		right: -50px;
+		top: 0;
+		background: gold;
+		color: #000;
+		font-weight: bold;
+		text-transform: uppercase;
+		width: 100px;
+		height:2em;
+		text-align: center;
+		line-height: 2em;
+		transform-origin: 50% 0;
+		font-size: 10px;
+		transform: rotate(45deg) translate(0%,100%);
+		vertical-align: baseline;
+		outline: solid goldenrod 2px;
+		padding:0;
+		margin:0;
+	}
+	
+	
+	/*,*:before,*:after{outline:solid red 1px;}*/
+		</style>
+		<svg style="width:0;height:0;" viewBox="0 0 21 21" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink"  >
 			<symbol id=logo>
 				<symbol id="jo">
 					<mask id="o">
@@ -244,31 +243,32 @@ body:after {
 				<use xlink:href="#jo" transform="rotate(270,10.5,10.5)"/>
 			</symbol>
 		</svg>
+		<link rel="icon" />
 	</head>
 	<body>
 		<script>
 			var webms=[
 					//top have black posters
-					 "http://giant.gfycat.com/FavorableHarmoniousHapuka.webm"
-					,"http://giant.gfycat.com/SparseHelpfulBlackmamba.webm"
-					,"http://fat.gfycat.com/RashWebbedHoneybee.webm"
-					,"http://giant.gfycat.com/EnlightenedHeartfeltHoopoe.webm"
-					,"http://giant.gfycat.com/FluidUncomfortableFruitbat.webm"
+					 "https://giant.gfycat.com/FavorableHarmoniousHapuka.webm"
+					,"https://giant.gfycat.com/SparseHelpfulBlackmamba.webm"
+					,"https://fat.gfycat.com/RashWebbedHoneybee.webm"
+					,"https://giant.gfycat.com/EnlightenedHeartfeltHoopoe.webm"
+					,"https://giant.gfycat.com/FluidUncomfortableFruitbat.webm"
 					//,"https://giant.gfycat.com/KindOpenGiantschnauzer.webm"
-					,"http://zippy.gfycat.com/HelpfulRectangularGnu.webm"
-					,"http://fat.gfycat.com/AcrobaticThatAfricanhornbill.webm"
-					,"http://giant.gfycat.com/BiodegradableHappygoluckyAfricanbushviper.webm"
-					,"http://fat.gfycat.com/GiftedOffensiveGrub.webm"
-					//,"http://zippy.gfycat.com/TiredUnawareHorsefly.webm"
-					,"http://giant.gfycat.com/CommonRespectfulEwe.webm-l"
-					,"http://zippy.gfycat.com/FrigidOpenKatydid.webm-l"
-					,"http://fat.gfycat.com/SimplisticIllustriousAdmiralbutterfly.webm-l"
-					,"http://fat.gfycat.com/EachQueasyDaddylonglegs.webm-l"
-					//,"http://fat.gfycat.com/ImpassionedCourteousBooby.webm-l"
-					,"http://fat.gfycat.com/NippyPerkyGartersnake.webm"
-					//,"http://fat.gfycat.com/InsecureYearlyAndeancockoftherock.webm-l"
-					,"http://giant.gfycat.com/EnragedIllegalArmednylonshrimp.webm"
-					,"http://zippy.gfycat.com/OpulentEvergreenBrant.webm"
+					,"https://zippy.gfycat.com/HelpfulRectangularGnu.webm"
+					,"https://fat.gfycat.com/AcrobaticThatAfricanhornbill.webm"
+					,"https://giant.gfycat.com/BiodegradableHappygoluckyAfricanbushviper.webm"
+					,"https://fat.gfycat.com/GiftedOffensiveGrub.webm"
+					//,"https://zippy.gfycat.com/TiredUnawareHorsefly.webm"
+					,"https://giant.gfycat.com/CommonRespectfulEwe.webm-l"
+					,"https://zippy.gfycat.com/FrigidOpenKatydid.webm-l"
+					,"https://fat.gfycat.com/SimplisticIllustriousAdmiralbutterfly.webm-l"
+					,"https://fat.gfycat.com/EachQueasyDaddylonglegs.webm-l"
+					//,"https://fat.gfycat.com/ImpassionedCourteousBooby.webm-l"
+					,"https://fat.gfycat.com/NippyPerkyGartersnake.webm"
+					//,"https://fat.gfycat.com/InsecureYearlyAndeancockoftherock.webm-l"
+					,"https://giant.gfycat.com/EnragedIllegalArmednylonshrimp.webm"
+					,"https://zippy.gfycat.com/OpulentEvergreenBrant.webm"
 					
 				]
 				,last=(localStorage.lastWebm||0)*1
@@ -309,6 +309,12 @@ body:after {
 				bk.setAttribute(attr,'true')
 			})
 			
+			document.querySelector("link[rel='icon']").href=`data:image/svg+xml;utf8,${escape(
+				logo.parentNode.outerHTML.replace(/\t|\n/g,'')
+					.replace(/<\/svg>/,`<use xlink:href="#logo"></use></svg>`)
+					.replace(/width:0;height:0/,"width:100px;height:100px")
+			)}`
+			
 		</script>
 		<div id=page>
 			<h2>
@@ -321,19 +327,19 @@ body:after {
 			</h2>
 			<div id=creations>
 				<section>
-					<a href="http://Anadro.me">
+					<a href="https://Anadro.me">
 						<img src="https://pbs.twimg.com/profile_images/600538100226347009/GLXV4wph_400x400.png">
 					</a>
-					<h3><a href="http://Anadro.me">Anadro.me</a> – <a href="http://twitter.com/Anadromeo" tweet>@Anadromeo</a></h3>
+					<h3><a href="https://Anadro.me">Anadro.me</a> – <a href="https://twitter.com/Anadromeo" tweet>@Anadromeo</a></h3>
 					<p>A mobile-friendly omnidirectional scrabble variant with 40 new bonus tiles, a board editor fed by a tile inventory mechanic, and definitions provided per turn. Scores may require scientific notation.</p>
 					<p>Bot player "Lux" will beat you: he always finds the highest-scoring turn in a board of arbitrary size, tile configuration, letter placement and rack letter availability.</p>
 					<p class=libs>Used: Nodejs, Expressjs, MySQL, lodash, jQuery, Jade, Supervisor, Passportjs for Google & Facebook logins, canvas + Cairo for server-side game screenshots, Pushbullet, Twitter's API.</p>
 				</section>
 				<section>
-					<a href="http://jnvm.github.io/diyfractal">
+					<a href="https://jnvm.github.io/diyfractal">
 						<img src="https://pbs.twimg.com/profile_images/653771314507845632/5iCRj6Zj_400x400.png">
 					</a>
-					<h3><a href="http://jnvm.github.io/diyfractal">DIYFractal</a> – <a href="http://twitter.com/diyfractal" tweet>@DIYFractal</a></h3>
+					<h3><a href="https://jnvm.github.io/diyfractal">DIYFractal</a> – <a href="https://twitter.com/diyfractal" tweet>@DIYFractal</a></h3>
 					<p>Create, color, share, screenshot, and animate into .webms user-generated complex (but not necessarily complicated!) fractals with a WYSIWYG equation editor.</p>
 					<p>User-familiar infix notation is converted to a GLSL webgl shader, rendering dramatically faster than CPU + web workers, at the cost of a loss of precision on GPU.  Speed made front-end webm generation feasible by tweening individual variables.</p>
 					<p class=libs>Used: Three.js, Whammy.js, lodash, async, jQuery, qtip2, Sass, LeafletJS, MathQuill.  Previous iterations: Google Maps, MathJax, web workers, AWS Lambdas.</p>
