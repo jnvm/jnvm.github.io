@@ -267,7 +267,6 @@
 					
 				]
 				,last=(localStorage.lastWebm||0)*1
-				,tag=window.innerWidth>960?"video":"img"
 				,blanks=8//top n are empty stills
 				,getNextSrc=function(){
 					var next=webms[last%webms.length]
@@ -282,17 +281,10 @@
 						.replace(/.webm.*$/,'-mobile.mp4')
 				}
 				
-			if(tag=="img") webms=webms.slice(blanks)
-			var  bk=document.createElement(tag)
+			var  bk=document.createElement("video")
 				,webm=getNextSrc()
 
-			if(tag=="video"){
-				bk.style.filter="blur(2px)"
-			}
-			else{
-				webm=webm.replace(/\/\w+\./,'/thumbs.')
-					.replace(/.webm.*$/,'-poster.jpg')
-			}
+			webm=webm.replace(/\/\w+\./,'/thumbs.').replace(/.webm.*$/,'-poster.jpg')
 			
 			bk.id="bk"
 			bk.src=webm
