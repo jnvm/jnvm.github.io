@@ -297,7 +297,8 @@
 			bk.id="bk"
 			bk.src=webm
 			document.body.appendChild(bk)
-			;'playsinline preload autoplay muted'.split(' ').forEach(function(attr){
+			;'playsinline preload autoplay muted'.split(' ').forEach(attr=>{
+				bk[attr]=true
 				bk.setAttribute(attr,'true')
 			})
 			
