@@ -235,8 +235,8 @@
 						<circle r="1.5" cx="3.5" cy="17.5" fill="#000"/>
 						<rect width="3.5" height="3" fill="#000" x="0" y="16"/>
 					</mask>
-					<circle cx="03.5" cy="17.5" r="3.5" fill="#000" mask="url(#j)"/>
-					<circle cx="10.5" cy="17.5" r="3.5" fill="#000" mask="url(#o)"/>
+					<circle cx="03.5" cy="17.5" r="3.5" mask="url(#j)"/>
+					<circle cx="10.5" cy="17.5" r="3.5" mask="url(#o)"/>
 				</symbol>
 				<use xlink:href="#jo"/>
 				<use xlink:href="#jo" transform="rotate(090,10.5,10.5)"/>
@@ -298,15 +298,15 @@
 			document.querySelector("link[rel='icon']").href=`data:image/svg+xml;utf8,${escape(
 				logo.parentNode.outerHTML.replace(/\t|\n/g,'')
 					.replace(/<\/svg>/,`<use xlink:href="#logo"></use></svg>`)
-					.replace(/width:0;height:0/,"width:256px;height:256px")
+					.replace(/width:0;height:0/,"width:256px;height:256px;fill:#fff;")
 			)}`
 		</script>
 		<div id=page>
 			<h2>
 				<a href="mailto:j@nvm.io" title=j@nvm.io content="✉">✉</a>
 				<a href="/" id=icon-holder>
-					<svg id=icon-shadow width="1em" height="1em" viewBox="0 0 21 21"><use xlink:href="#logo"></use></svg>
-					<svg id=icon        width="1em" height="1em" viewBox="0 0 21 21"><use xlink:href="#logo"></use></svg>
+					<svg id=icon-shadow      width="1em" height="1em" viewBox="0 0 21 21"><use xlink:href="#logo"></use></svg>
+					<svg id=icon fill="#fff" width="1em" height="1em" viewBox="0 0 21 21"><use xlink:href="#logo"></use></svg>
 				</a>
 				<a href="https://github.com/jnvm" title=github content="{}">{}</a>
 			</h2>
