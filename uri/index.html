@@ -1,5 +1,6 @@
 <script>
 var w = window.open()
+console.log(w,w.document,Object.keys(w))
 w.document.open()
 w.document.write(`<iframe style="padding:0;margin:0;border:0;width:100%;height:100%" srcdoc='${decodeURIComponent(location.hash.slice(16))}'></iframe>`)
 w.document.body.setAttribute("style","margin:0")
