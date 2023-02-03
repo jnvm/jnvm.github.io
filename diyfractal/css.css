@@ -335,6 +335,10 @@ n {
     background-color: transparent!important;
 }
 
+.math-editor .hasCursor {
+    white-space: nowrap;
+}
+
 #iterations{width:60px;}
 
 .different{border: solid #0af 1px;}
