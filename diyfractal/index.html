@@ -56,16 +56,12 @@
 						</m>
 						<div class='while'>
 							<m title='<m>c(x,y)</m> represents each x,y pixel in the image as the sum of the "real" x-coordinate + the "imaginary" y-coordinate'>
-								c(x,y) = (
-								</m>
+								c(x,y) = (</m>
 								<n><input id=x readonly title='x-coordinate of image center' ></n><m>
 								&plusmn;
-								<n><input id=xw readonly title='½ width of image window from center' ></n>
-								) + (
-								<n><input id=y readonly title='y-coordinate of image center' ></n>
+								<n><input id=xw readonly title='½ width of image window from center' ></n>) + (<n><input id=y readonly title='y-coordinate of image center' ></n>
 								&plusmn;
-								<n><input id=yh readonly title='½ height of image window from center' ></n>
-								)&middot;<span title="√-1">i</span>
+								<n><input id=yh readonly title='½ height of image window from center' ></n>)&middot;<span title="√-1">i</span>
 							</m>
 							<br>
 							<m title='<m>v(n,z)</m> a <a href="https://en.wikipedia.org/wiki/Mandelbrot_set#Continuous_.28smooth.29_coloring">normalized iteration count</a>, essentially a smooth version of the integer n.  It will look best on z^2+c.'>v(n,z)</m><m> = n - (log(log(|z|)/log(2))/log(2))/n</m>
