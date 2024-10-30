@@ -1,0 +1,17 @@
+{
+	"names": {
+		"nvm": "afd2d755bfdcd384834e2ed80edf3fed727354757b3ca1fce1fed23d05d71e1b"
+	},
+	"relays": {
+		"afd2d755bfdcd384834e2ed80edf3fed727354757b3ca1fce1fed23d05d71e1b": [
+			"wss://relay.primal.net",
+			"wss://purplepag.es",
+			"wss://junxingwang.org",
+			"wss://relay.nostr.bg",
+			"wss://relay.snort.social",
+			"wss://relay.nostr.band",
+			"wss://custom.fiatjaf.com",
+			"wss://relayable.org"
+		]
+	}
+}
