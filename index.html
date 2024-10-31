@@ -270,9 +270,8 @@
 	</head>
 	<body>
 		<script>
-			var note=encodeURIComponent("🎵")
-			if(location.hash.startsWith("#"+note)){
-				var index=location.hash.split(note)[1]*1-1
+			if(location.hash.match(/#s\d/)){
+				var index=location.hash.slice(2)*1-1
 				var seq=["kazoocapella","acapella","swing","rock opera"]
 				location.href=`/suno/The Goldbug & the Goose (${seq[index]} 1).mp4`
 			}
