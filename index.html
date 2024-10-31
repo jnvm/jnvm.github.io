@@ -139,6 +139,10 @@
 				scale: 0.68;
 			}
 		}
+		&:is(a[title*='sats']){
+			filter: contrast(0) brightness(10);
+			font-size: 2em;
+		}
 	}
 	h2>[title],
 	h2>[title]:before{
@@ -320,7 +324,7 @@
 		<div id=page>
 			<h2>
 				<a href="mailto:j@nvm.io" title=j@nvm.io content="✉">✉</a>
-				<a href="https://strike.me/nvm" title="sats" content="🗲">🗲</a>
+				<a href="https://strike.me/nvm" title="sats via lightning" content="⚡️">⚡️</a>
 				<a href="/" id=icon-holder>
 					<svg id=icon-shadow      width="1em" height="1em" viewBox="0 0 21 21"><use xlink:href="#logo"></use></svg>
 					<svg id=icon fill="#fff" width="1em" height="1em" viewBox="0 0 21 21"><use xlink:href="#logo"></use></svg>
