@@ -270,6 +270,12 @@
 	</head>
 	<body>
 		<script>
+			var note=encodeURIComponent("🎵")
+			if(location.hash.startsWith("#"+note)){
+				var index=location.hash.split(note)[1]*1-1
+				var seq=["kazoocapella","acapella","swing","rock opera"]
+				location.href=`/suno/The Goldbug & the Goose (${seq[index]} 1).mp4`
+			}
 			var webms=[
 					"https://video.twimg.com/ext_tw_video/657418589075587072/pu/vid/502x360/HYhgKAR3kHDHKsYA.mp4",
 					"https://video.twimg.com/tweet_video/C0uD5gWUAAAbQ0-.mp4",
