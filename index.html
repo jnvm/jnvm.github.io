@@ -270,89 +270,56 @@
 	</head>
 	<body>
 		<script>
-			if(location.hash.match(/#s\d/)){
-				var {index,start,stop}=location.hash.match(/#(s(?<index>\d+)(@((?<start>\d+\.?\d*)(-(?<stop>\d+\.?\d*)?)?)?)?)?/).groups
-				index=index*1 - 1
-				var seq=["kazoocapella","acapella","swing","rock opera"]
-				var songPath=`/suno/The Goldbug & the Goose (${seq[index]} 1).mp4`
-				if(start!==undefined){
-					document.head.querySelector("style")?.remove()
-					document.body.innerHTML=`
-					    <style>
-					        body{
-					            background: #000;
-					            display: grid;
-					            min-width: fit-content;
-					            min-height: fit-content;
-					            place-content: center;
-					        }
-					    </style>
-					    <video controls id=song src="${songPath}" autoplay></video>
-					`
-					song.currentTime=start
-					if(stop){
-					    var st=setInterval(()=>{
-					        if(song.currentTime>=stop){
-					            song.pause()
-					            clearInterval(st)            
-					        }
-					    },100)
+			var webms=[
+					"https://video.twimg.com/ext_tw_video/657418589075587072/pu/vid/502x360/HYhgKAR3kHDHKsYA.mp4",
+					"https://video.twimg.com/tweet_video/C0uD5gWUAAAbQ0-.mp4",
+					"https://video.twimg.com/ext_tw_video/658134009759711232/pu/vid/392x360/Cwtsoik6NGTmidOc.mp4-l",
+					"https://video.twimg.com/ext_tw_video/658859545804967936/pu/vid/424x360/PYwNaTnl0F6gV8xI.mp4-l",
+					"https://video.twimg.com/ext_tw_video/658889996099809280/pu/vid/382x180/D4ctYCTk-SEt9IIS.mp4",
+					"https://video.twimg.com/ext_tw_video/658893488562577408/pu/vid/854x720/TZQujwkC6jYzBhXe.mp4",
+					"https://video.twimg.com/ext_tw_video/661041523912392705/pu/vid/1284x720/puZlkSVvhxHjPyKo.mp4",
+					"https://video.twimg.com/ext_tw_video/661059821798473729/pu/vid/706x360/LNZO6BHsqcAtV-YR.mp4",
+					"https://video.twimg.com/ext_tw_video/663479059083472896/pu/vid/372x360/gGHHJpdJ2PCSIuUR.mp4",
+					"https://video.twimg.com/ext_tw_video/667540060661637121/pu/vid/370x360/2E5ipBhn0nLKyWuN.mp4",
+					"https://video.twimg.com/ext_tw_video/676118760118292480/pu/vid/670x360/1uD_WTQ3iD5KAZqL.mp4-l",
+					"https://video.twimg.com/ext_tw_video/695456242924281856/pu/vid/1598x720/8tMFq1wSKiW47Lvr.mp4",
+					"https://video.twimg.com/ext_tw_video/707047933410152449/pu/vid/558x360/g34foppyip2Umni3.mp4",
+					"https://video.twimg.com/ext_tw_video/719258050960293889/pu/vid/444x360/_QbwQ5VS5QfLnWIi.mp4",
+					"https://video.twimg.com/ext_tw_video/657417111845871616/pu/vid/394x360/roEoURzr2t59Y1Xt.mp4",
+					"https://video.twimg.com/ext_tw_video/657054531960770561/pu/vid/370x360/Ga7MYIE828McZbm9.mp4-l",
+					"https://video.twimg.com/ext_tw_video/656680111681368064/pu/vid/804x360/BkW-mVur-F9ilcGQ.mp4-l",
+					"https://video.twimg.com/ext_tw_video/656622314235129856/pu/vid/396x360/0fyOfQL8L2AB-0KN.mp4-l",
+				]
+				,last=(localStorage.lastWebm||0)*1
+				,getNextSrc=function(){
+					var next=webms[last%webms.length]
+					localStorage.lastWebm=++last
+					if(next.match("-l")){
+						next=next.slice(0,-2)
+						bk.setAttribute("loop","loop")
 					}
+					else bk.removeAttribute("loop")
+
+					return next
 				}
-				else location.href=songPath
-			}
-			else{
-				var webms=[
-						"https://video.twimg.com/ext_tw_video/657418589075587072/pu/vid/502x360/HYhgKAR3kHDHKsYA.mp4",
-						"https://video.twimg.com/tweet_video/C0uD5gWUAAAbQ0-.mp4",
-						"https://video.twimg.com/ext_tw_video/658134009759711232/pu/vid/392x360/Cwtsoik6NGTmidOc.mp4-l",
-						"https://video.twimg.com/ext_tw_video/658859545804967936/pu/vid/424x360/PYwNaTnl0F6gV8xI.mp4-l",
-						"https://video.twimg.com/ext_tw_video/658889996099809280/pu/vid/382x180/D4ctYCTk-SEt9IIS.mp4",
-						"https://video.twimg.com/ext_tw_video/658893488562577408/pu/vid/854x720/TZQujwkC6jYzBhXe.mp4",
-						"https://video.twimg.com/ext_tw_video/661041523912392705/pu/vid/1284x720/puZlkSVvhxHjPyKo.mp4",
-						"https://video.twimg.com/ext_tw_video/661059821798473729/pu/vid/706x360/LNZO6BHsqcAtV-YR.mp4",
-						"https://video.twimg.com/ext_tw_video/663479059083472896/pu/vid/372x360/gGHHJpdJ2PCSIuUR.mp4",
-						"https://video.twimg.com/ext_tw_video/667540060661637121/pu/vid/370x360/2E5ipBhn0nLKyWuN.mp4",
-						"https://video.twimg.com/ext_tw_video/676118760118292480/pu/vid/670x360/1uD_WTQ3iD5KAZqL.mp4-l",
-						"https://video.twimg.com/ext_tw_video/695456242924281856/pu/vid/1598x720/8tMFq1wSKiW47Lvr.mp4",
-						"https://video.twimg.com/ext_tw_video/707047933410152449/pu/vid/558x360/g34foppyip2Umni3.mp4",
-						"https://video.twimg.com/ext_tw_video/719258050960293889/pu/vid/444x360/_QbwQ5VS5QfLnWIi.mp4",
-						"https://video.twimg.com/ext_tw_video/657417111845871616/pu/vid/394x360/roEoURzr2t59Y1Xt.mp4",
-						"https://video.twimg.com/ext_tw_video/657054531960770561/pu/vid/370x360/Ga7MYIE828McZbm9.mp4-l",
-						"https://video.twimg.com/ext_tw_video/656680111681368064/pu/vid/804x360/BkW-mVur-F9ilcGQ.mp4-l",
-						"https://video.twimg.com/ext_tw_video/656622314235129856/pu/vid/396x360/0fyOfQL8L2AB-0KN.mp4-l",
-					]
-					,last=(localStorage.lastWebm||0)*1
-					,getNextSrc=function(){
-						var next=webms[last%webms.length]
-						localStorage.lastWebm=++last
-						if(next.match("-l")){
-							next=next.slice(0,-2)
-							bk.setAttribute("loop","loop")
-						}
-						else bk.removeAttribute("loop")
-	
-						return next
-					}
-					
-				var  bk=document.createElement("video")
-					,webm=getNextSrc()
 				
-				bk.id="bk"
-				bk.src=webm
-				bk.style.filter="blur(3px)"
-				document.body.appendChild(bk)
-				;'playsinline preload autoplay muted'.split(' ').forEach(attr=>{
-					bk[attr]=true
-					bk.setAttribute(attr,'true')
-				})
-				
-				document.querySelector("link[rel='icon']").href=`data:image/svg+xml;utf8,${escape(
-					logo.parentNode.outerHTML.replace(/\t|\n/g,'')
-						.replace(/<\/svg>/,`<use xlink:href="#logo"></use></svg>`)
-						.replace(/width:0;height:0/,"width:256px;height:256px;fill:#fff;")
-				)}`
-			}
+			var  bk=document.createElement("video")
+				,webm=getNextSrc()
+			
+			bk.id="bk"
+			bk.src=webm
+			bk.style.filter="blur(3px)"
+			document.body.appendChild(bk)
+			;'playsinline preload autoplay muted'.split(' ').forEach(attr=>{
+				bk[attr]=true
+				bk.setAttribute(attr,'true')
+			})
+			
+			document.querySelector("link[rel='icon']").href=`data:image/svg+xml;utf8,${escape(
+				logo.parentNode.outerHTML.replace(/\t|\n/g,'')
+					.replace(/<\/svg>/,`<use xlink:href="#logo"></use></svg>`)
+					.replace(/width:0;height:0/,"width:256px;height:256px;fill:#fff;")
+			)}`
 		</script>
 		<div id=page>
 			<h2>
@@ -406,5 +373,38 @@
 				</section>
 			</div>
 		</div>
+		<script>
+			if(location.hash.match(/#s\d/)){
+				var {index,start,stop}=location.hash.match(/#(s(?<index>\d+)(@((?<start>\d+\.?\d*)(-(?<stop>\d+\.?\d*)?)?)?)?)?/).groups
+				index=index*1 - 1
+				var seq=["kazoocapella","acapella","swing","rock opera"]
+				var songPath=`/suno/The Goldbug & the Goose (${seq[index]} 1).mp4`
+				if(start!==undefined){
+					document.head.querySelector("style")?.remove()
+					document.body.innerHTML=`
+					    <style>
+					        body{
+					            background: #000;
+					            display: grid;
+					            min-width: fit-content;
+					            min-height: fit-content;
+					            place-content: center;
+					        }
+					    </style>
+					    <video controls id=song src="${songPath}" autoplay></video>
+					`
+					song.currentTime=start
+					if(stop){
+					    var st=setInterval(()=>{
+					        if(song.currentTime>=stop){
+					            song.pause()
+					            clearInterval(st)            
+					        }
+					    },100)
+					}
+				}
+				else location.href=songPath
+			}
+		</script>
 	</body>
 </html>
