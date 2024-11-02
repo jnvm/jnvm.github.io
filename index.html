@@ -272,6 +272,7 @@
 		<script>
 			if(location.hash.match(/#s\d/)){
 				var {index,start,stop}=location.hash.match(/#(s(?<index>\d+)(@((?<start>\d+\.?\d*)(-(?<stop>\d+\.?\d*)?)?)?)?)?/).groups
+				index=index*1+1
 				var seq=["kazoocapella","acapella","swing","rock opera"]
 				var songPath=`/suno/The Goldbug & the Goose (${seq[index]} 1).mp4`
 				if(start!==undefined){
