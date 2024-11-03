@@ -13,6 +13,15 @@
 	  box-sizing: inherit;
 	  text-align: inherit;
 	}
+	@property --p {
+	  syntax: "<number>";
+	  inherits: true;
+	  initial-value: 0;
+	}
+	@keyframes pulse{
+	    from{--p:0;}
+	    to  {--p:1;}
+	}
 	  
 	:root{
 		--fast:.125s;
@@ -41,7 +50,7 @@
 		padding: 10px;
 		box-shadow: 0 0 10px -3px #000;
 		margin: 10px;
-		background-color: rgba(255,255,255,.90);	
+		background-color: rgba(255,255,255,.88);	
 		vertical-align: top;
 		transition:background-color ease-in var(--fast) ;
 		position: relative;
@@ -50,9 +59,6 @@
 	}
 	section:hover{
 		background-color: rgba(255,255,255,1);
-	}
-	#creations>* {
-		/*width: calc(50% - 22px);*/
 	}
 	#creations img{
 		width:200px;
@@ -86,6 +92,9 @@
 		display:block;
 		width:100%;
 		height:100%;
+	    	filter: blur(3px) hue-rotate(calc(1turn* var(--p)));
+	    	animation: pulse linear 12s infinite;
+
 	}
 	h1,h2{
 		color: #fff;
@@ -308,7 +317,6 @@
 			
 			bk.id="bk"
 			bk.src=webm
-			bk.style.filter="blur(3px)"
 			document.body.appendChild(bk)
 			;'playsinline preload autoplay muted'.split(' ').forEach(attr=>{
 				bk[attr]=true
